@@ -1,8 +1,13 @@
 {
   "extends": [
-    "react-app"
+    "react-app",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime"
   ],
   "rules": {
-    "quotes": [2, "single", { "avoidEscape": true }]
+    "semi": ["error", "always", { "omitLastInOneLineBlock": false}],
+    "quotes": [2, "single", { "avoidEscape": true }],
+    "linebreak-style": "off"
   }
 }
