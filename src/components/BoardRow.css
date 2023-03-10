@@ -1,0 +1,5 @@
+.board-row {
+  background-color: aqua;
+  display: flex;
+  flex-grow: 1;
+}
