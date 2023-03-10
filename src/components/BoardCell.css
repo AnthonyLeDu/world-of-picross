@@ -2,3 +2,11 @@
   border: 1px solid black;
   flex-grow: 1;
 }
+
+.board-cell--on {
+  background-color: green;
+}
+
+.board-cell--off {
+  background-color: red;
+}

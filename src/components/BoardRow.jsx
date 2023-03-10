@@ -1,18 +1,29 @@
 import './BoardRow.css';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import BoardCell from './BoardCell';
+import { getColumnsCount } from '../store/selectors/board';
 
 function BoardRow({ index }) {
-  const colCount = 10;
-
+  const columnsCount = useSelector(getColumnsCount);
   return (
     <div className="board-row">
       {
-        [...Array(colCount)].map((v, i) => (
-          <BoardCell key={`board-cell-${index}-${i}`} />
+        [...Array(columnsCount)].map((v, i) => (
+          <BoardCell
+            // eslint-disable-next-line react/no-array-index-key
+            key={`board-cell-${index}-${i}`}
+            rowIndex={index}
+            columnIndex={i}
+          />
         ))
       }
     </div>
   );
 }
+
+BoardRow.propTypes = {
+  index: PropTypes.number.isRequired,
+};
 
 export default BoardRow;

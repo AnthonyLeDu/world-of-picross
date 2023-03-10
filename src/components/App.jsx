@@ -1,9 +1,14 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './App.css';
 import Board from './Board';
 
 function App() {
-  const a = 1;
-  
+  const table = useSelector((state) => state.board.table);
+  useEffect(() => {
+    console.log(table);
+  }, [table]);
+
   return (
     <div className="App">
       <Board />
