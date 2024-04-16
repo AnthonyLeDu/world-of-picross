@@ -1,7 +1,5 @@
 .board {
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  height: 20rem;
-  width: 20rem;
+  display: grid;
+  width: fit-content;
 }

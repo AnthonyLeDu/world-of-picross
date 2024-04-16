@@ -18,20 +18,22 @@ const createTable = (rowsCount, columnsCount) => {
 };
 
 // Initial state
-const INIT_ROWS_COUNT = 10;
-const INIT_COLUMNS_COUNT = 10;
-
 const initialState = {
-  rowsCount: INIT_ROWS_COUNT,
-  columnsCount: INIT_COLUMNS_COUNT,
-  table: createTable(INIT_ROWS_COUNT, INIT_COLUMNS_COUNT),
+  name: undefined,
+  table: undefined,
+  rowsCount: undefined,
+  columnsCount: undefined,
 };
 
 // Reducer
 export default createReducer(initialState, (builder) => {
   builder
-    .addCase(initBoard, (state) => {
-      state.table = createTable(state.rowsCount, state.columnsCount);
+    .addCase(initBoard, (state, action) => {
+      const data = action.payload;
+      state.rowsCount = data.rowsCount;
+      state.columnsCount = data.columnsCount;
+      state.content = data.content;
+      state.table = createTable(data.rowsCount, data.columnsCount);
     })
     .addCase(toggleCellON, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
