@@ -4,9 +4,9 @@
 }
 
 .board-cell--on {
-  background-color: green;
+  background-color: black;
 }
 
 .board-cell--off {
-  background-color: red;
+  background-color: gray;
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initBoard, toggleCell } from '../actions/board';
+import { initBoard, toggleCellON, toggleCellOFF } from '../actions/board';
 
 const createTableCell = () => ({
   checkState: null,
@@ -33,17 +33,25 @@ export default createReducer(initialState, (builder) => {
     .addCase(initBoard, (state) => {
       state.table = createTable(state.rowsCount, state.columnsCount);
     })
-    .addCase(toggleCell, (state, action) => {
+    .addCase(toggleCellON, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
       switch (cell.checkState) {
-        case null:
-          cell.checkState = true; // checked
-          break;
         case true:
-          cell.checkState = false; // marked as empty
+          cell.checkState = null; // marked as empty
           break;
         default:
-          cell.checkState = null; // default
+          cell.checkState = true; // default
+          break;
+      }
+    })
+    .addCase(toggleCellOFF, (state, action) => {
+      const cell = state.table.at(action.payload.row).at(action.payload.column);
+      switch (cell.checkState) {
+        case false:
+          cell.checkState = null; // marked as empty
+          break;
+        default:
+          cell.checkState = false; // default
           break;
       }
     });

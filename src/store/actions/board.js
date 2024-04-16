@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 
 export const initBoard = createAction('board/initBoard');
-export const toggleCell = createAction('board/toggleCell');
+export const toggleCellON = createAction('board/toggleCellON');
+export const toggleCellOFF = createAction('board/toggleCellOFF');
