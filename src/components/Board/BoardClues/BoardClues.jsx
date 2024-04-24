@@ -1,16 +1,14 @@
 import { useSelector } from 'react-redux';
 import './index.scss';
 import PropTypes from 'prop-types';
-import { getColumnsCount, getRowsCount } from '../../../store/selectors/board';
-import {VERTICAL} from '../../../utils/Constants';
+import { getBoardColumnsCount, getBoardRowsCount } from '../../../store/selectors/board';
 import BoardCluesRow from './BoardCluesRow';
-// import { useMemo } from 'react';
 
 function BoardClues({direction, content}) {
 
-  const rowsCount = useSelector(getRowsCount);
-  const columnsCount = useSelector(getColumnsCount);
-  const itemsCount = direction === VERTICAL ? rowsCount : columnsCount;
+  const rowsCount = useSelector(getBoardRowsCount);
+  const columnsCount = useSelector(getBoardColumnsCount);
+  const itemsCount = direction === 'rows' ? rowsCount : columnsCount;
 
   return (
     <div className={`board-clues board-clues--${direction}`}>

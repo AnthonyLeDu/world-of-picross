@@ -12,7 +12,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         // additionalData allows you to pass variables or mixins to all Sass files
-        additionalData: "@import './src/styles/variables.scss';"
+        additionalData: "@import './src/styles/variables.scss'; @import './src/styles/reset.scss';"
       }
     }
   }

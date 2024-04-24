@@ -3,25 +3,34 @@
   display: grid;
   width: fit-content;
   margin: 0 auto;
-
+  border: 2px solid #555;
+  
   &-row {
     display: flex;
-
+    border-bottom: 1px solid #555;
+    
+    &:last-of-type {
+      border-bottom: none;
+    }
+    
     &:nth-of-type(2n) {
       // background-color: #eee;
     }
-
+    
     &:nth-of-type(5n) {
-      border-bottom: 2px solid #000;
+      border-bottom-color: #000;
     }
   }
-
+  
   &-cell {
-    // box-sizing: border-box;
-    border: 1px solid #555;
+    border-right: 1px solid #555;
+
+    &:last-of-type {
+      border-right: none;
+    }
 
     &:nth-of-type(5n) {
-      border-right: 2px solid #000;
+      border-right-color: #000;
     }
 
     &:nth-of-type(2n) {

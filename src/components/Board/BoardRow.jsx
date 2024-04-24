@@ -2,10 +2,10 @@ import './index.scss';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import BoardCell from './BoardCell';
-import { getColumnsCount } from '../../store/selectors/board';
+import { getBoardColumnsCount } from '../../store/selectors/board';
 
 function BoardRow({ index }) {
-  const columnsCount = useSelector(getColumnsCount);
+  const columnsCount = useSelector(getBoardColumnsCount);
   return (
     <div className="board-row">
       {

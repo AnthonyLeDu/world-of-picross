@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
-import { getRowsCount } from '../../store/selectors/board';
+import { getBoardRowsCount } from '../../store/selectors/board';
 import './index.scss';
 import BoardRow from './BoardRow';
 
 function Board() {
 
-  const rowsCount = useSelector(getRowsCount);
+  const rowsCount = useSelector(getBoardRowsCount);
 
   return (
     <div className="board">

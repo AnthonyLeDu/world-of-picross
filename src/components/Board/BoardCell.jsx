@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getTableCell } from '../../store/selectors/board';
+import { getBoardTableCell } from '../../store/selectors/board';
 import { toggleCellON, toggleCellOFF } from '../../store/actions/board';
 import './index.scss';
 
 function BoardCell({ rowIndex, columnIndex }) {
   const dispatch = useDispatch();
-  const tableCell = useSelector((state) => getTableCell(state, rowIndex, columnIndex));
+  const tableCell = useSelector((state) => getBoardTableCell(state, rowIndex, columnIndex));
 
   const toggleON = () => {
     dispatch(toggleCellON({ row: rowIndex, column: columnIndex }));

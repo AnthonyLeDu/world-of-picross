@@ -2,34 +2,42 @@
   width: fit-content;
   height: fit-content;
   display: flex;
-
-
-  &--horizontal {
+  
+  &--columns {
     flex-direction: row;
     margin-left: auto;
-
+    
     .board-clues__row {
-      display: flex;
       flex-direction: column;
-      align-items: center;
-
+      border-right: 1px solid #bbb;
+      
+      &:last-of-type {
+        border-right: none;
+      }
     }
   }
-
-  &--vertical {
+  
+  &--rows {
     flex-direction: column;
-
+    
     .board-clues__row {
-      display: flex;
-      align-items: center;
+      border-bottom: 1px solid #bbb;
+      
+      &:last-of-type {
+        border-bottom: none;
+      }
     }
   }
-
+  
   &__row {
+    display: flex;
+    justify-content: flex-end;
+    
     &:nth-of-type(2n) {
       background-color: #0001;
     }
-
+    
+    
     &__cell {
       display: flex;
       justify-content: center;

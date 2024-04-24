@@ -1,4 +1,4 @@
-import { initBoard } from '../actions/board';
+import { initBoard, setBoardIsLoading } from '../actions/board';
 
 const validateBoardData = (data) => {
   if (data.content === undefined) throw new Error(`'${data.name}' board has no content data.`);
@@ -9,15 +9,14 @@ const validateBoardData = (data) => {
 };
 
 export const fetchAndInitBoard = (name) => async (dispatch) => {
+  dispatch(setBoardIsLoading(true));
   fetch(`data/boards/${name}.json`)
-    .then((response) => response.json()
-      .then((data) => {
-        data.name = name;
-        validateBoardData(data);
-        data.rowsCount = data.content.length;
-        data.columnsCount = data.content[0].length;
-        // Validate all rows have the same amount of columns as row 0
-        dispatch(initBoard(data));
-      }))
+  .then((response) => response.json()
+  .then((data) => {
+    data.name = name;
+    validateBoardData(data);
+    dispatch(initBoard(data));
+    dispatch(setBoardIsLoading(false));
+  }))
     .catch((error) => console.error(`Error while fetching '${name}' board data: ${error}`));
 };
