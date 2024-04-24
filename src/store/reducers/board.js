@@ -20,21 +20,27 @@ const createTable = (rowsCount, columnsCount) => {
 // Initial state
 const initialState = {
   name: undefined,
-  table: undefined,
   rowsCount: undefined,
   columnsCount: undefined,
+  table: undefined,
+  goalContent: undefined,
+  completion: undefined,
 };
 
 // Reducer
 export default createReducer(initialState, (builder) => {
   builder
+
     .addCase(initBoard, (state, action) => {
       const data = action.payload;
+      state.name = data.name;
       state.rowsCount = data.rowsCount;
       state.columnsCount = data.columnsCount;
-      state.content = data.content;
+      state.goalContent = data.content;
       state.table = createTable(data.rowsCount, data.columnsCount);
+      state.completion = 0.0;
     })
+
     .addCase(toggleCellON, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
       switch (cell.checkState) {
@@ -46,6 +52,7 @@ export default createReducer(initialState, (builder) => {
           break;
       }
     })
+
     .addCase(toggleCellOFF, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
       switch (cell.checkState) {
