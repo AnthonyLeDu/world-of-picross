@@ -1,8 +1,8 @@
-import './BoardRow.css';
+import './index.scss';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import BoardCell from './BoardCell';
-import { getColumnsCount } from '../store/selectors/board';
+import { getColumnsCount } from '../../store/selectors/board';
 
 function BoardRow({ index }) {
   const columnsCount = useSelector(getColumnsCount);

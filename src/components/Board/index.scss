@@ -1,0 +1,42 @@
+.board {
+  background-color: white;
+  display: grid;
+  width: fit-content;
+  margin: 0 auto;
+
+  &-row {
+    display: flex;
+
+    &:nth-of-type(2n) {
+      // background-color: #eee;
+    }
+
+    &:nth-of-type(5n) {
+      border-bottom: 2px solid #000;
+    }
+  }
+
+  &-cell {
+    // box-sizing: border-box;
+    border: 1px solid #555;
+
+    &:nth-of-type(5n) {
+      border-right: 2px solid #000;
+    }
+
+    &:nth-of-type(2n) {
+      // background-color: #eee;
+    }
+
+    &--on {
+      background-color: black;
+    }
+    
+    &--off {
+      background-color: gray;
+    }
+
+  }
+
+}
+

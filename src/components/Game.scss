@@ -1,0 +1,10 @@
+.game{
+  width: fit-content;
+  margin: auto;
+
+  &-lower {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+  }
+}

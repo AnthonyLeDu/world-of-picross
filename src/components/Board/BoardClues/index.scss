@@ -1,0 +1,42 @@
+.board-clues {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+
+
+  &--horizontal {
+    flex-direction: row;
+    margin-left: auto;
+
+    .board-clues__row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+
+    .board-clues__row {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__row {
+    &:nth-of-type(2n) {
+      background-color: #0001;
+    }
+
+    &__cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  }
+  
+}
+

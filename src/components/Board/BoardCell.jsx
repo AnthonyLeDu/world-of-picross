@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getTableCell } from '../store/selectors/board';
-import { toggleCellON, toggleCellOFF } from '../store/actions/board';
-import './BoardCell.css';
+import { getTableCell } from '../../store/selectors/board';
+import { toggleCellON, toggleCellOFF } from '../../store/actions/board';
+import './index.scss';
 
 function BoardCell({ rowIndex, columnIndex }) {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function BoardCell({ rowIndex, columnIndex }) {
   return (
     <div
       className={classNames(
-        'board-cell',
+        'cell board-cell',
         // tableCell.checkState can be equal to null
         { 'board-cell--on': tableCell?.checkState === true },
         { 'board-cell--off': tableCell?.checkState === false },

@@ -8,4 +8,12 @@ export default defineConfig({
     react(),
     // eslint()
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // additionalData allows you to pass variables or mixins to all Sass files
+        additionalData: "@import './src/styles/variables.scss';"
+      }
+    }
+  }
 });
