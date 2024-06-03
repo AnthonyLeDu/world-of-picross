@@ -10,14 +10,14 @@
     
     .board-clues__row {
       flex-direction: column;
-      border-right: 1px solid #bbb;
+      border-left: 1px solid $light-grey;
       
-      &:last-of-type {
-        border-right: none;
+      &:first-of-type {
+        border-left: none;
       }
       
-      &:nth-of-type(5n) {
-        border-right: 2px solid #888;
+      &:nth-of-type(6n) {
+        border-left: 2px solid $mid-grey;
       }
     }
   }
@@ -27,14 +27,14 @@
     margin-top: 2px;
     
     .board-clues__row {
-      border-bottom: 1px solid #bbb;
+      border-top: 1px solid $light-grey;
       
-      &:last-of-type {
-        border-bottom: none;
+      &:first-of-type {
+        border-top: none;
       }
 
-      &:nth-of-type(5n) {
-        border-bottom: 2px solid #888;
+      &:nth-of-type(6n) {
+        border-top: 2px solid $mid-grey;
       }
     }
   }
