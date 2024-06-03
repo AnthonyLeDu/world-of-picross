@@ -3,14 +3,14 @@
   display: grid;
   width: fit-content;
   margin: 0 auto;
-  border: 2px solid #333;
+  border: 2px solid $dark-grey;
   
   &-row {
     display: flex;
-    border-top: 1px solid #555;
+    border-top: 1px solid $light-grey;
     
     &:nth-of-type(6n) {
-      border-top: 2px solid #333;
+      border-top: 2px solid $light-grey;
     }
 
     &:first-of-type {
@@ -20,14 +20,14 @@
   }
   
   &-cell {
-    border-left: 1px solid #555;
+    border-left: 1px solid $light-grey;
 
     &:first-of-type {
       border: none;
     }
 
     &:nth-of-type(6n) {
-      border-left: 2px solid #333;
+      border-left: 2px solid $light-grey;
     }
 
     &--on {
@@ -43,7 +43,7 @@
         left: calc(50% - 0.5px);
         height: 100%;
         width: 1px;
-        background-color: #333;
+        background-color: $dark-grey;
       }
       
       &:before {

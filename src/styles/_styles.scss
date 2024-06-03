@@ -9,8 +9,7 @@ p {
   margin: .5em 0;
 }
 
-
 .cell {
-  height: 2rem;
-  width: 2rem;
+  height: $cell-size;
+  width: $cell-size;
 }
