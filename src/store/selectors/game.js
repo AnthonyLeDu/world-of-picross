@@ -1,16 +1,16 @@
-export const getBoardIsLoading = (state) => state.board.isLoading;
+export const getGameIsLoading = (state) => state.game.isLoading;
 
-export const getBoardRowsCount = (state) => state.board.rowsCount;
+export const getBoardRowsCount = (state) => state.game.boardRowsCount;
 
-export const getBoardColumnsCount = (state) => state.board.columnsCount;
+export const getBoardColumnsCount = (state) => state.game.boardColumnsCount;
 
-export const getBoardName = (state) => state.board.name;
+export const getGameName = (state) => state.game.name;
 
-export const getBoardClues = (state) => state.board.clues;
+export const getBoardClues = (state) => state.game.boardClues;
 
 export const getBoardTableCell = (state, row, column) => {
-  if (state.board.table === undefined) return undefined;
-  const tableRow = state.board.table[row];
+  if (state.game.table === undefined) return undefined;
+  const tableRow = state.game.table[row];
   return tableRow ? tableRow[column] : undefined;
 };
 
@@ -19,9 +19,9 @@ export const getBoardTableCell = (state, row, column) => {
  * content compared to a goal board content (the solution).
  * @param {*} state Reducer state.
  */
-export const getBoardCompletion = (state) => {
-  const currentTable = state.board.table;
-  const goalContent = state.board.goalContent;
+export const getCompletion = (state) => {
+  const currentTable = state.game.table;
+  const goalContent = state.game.goalContent;
   if (currentTable === undefined) {
     return undefined;
   }

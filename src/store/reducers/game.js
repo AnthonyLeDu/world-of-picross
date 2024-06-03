@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initBoard, toggleCellON, toggleCellOFF, setBoardIsLoading } from '../actions/board';
+import { initGameBoard, toggleCellON, toggleCellOFF, setGameIsLoading } from '../actions/game';
 
 const createTableCell = () => ({
   checkState: null,
@@ -56,11 +56,11 @@ const generateTableClues = (rowsContent) => {
 const initialState = {
   isLoading: true,
   name: undefined,
-  rowsCount: undefined,
-  columnsCount: undefined,
+  boardRowsCount: undefined,
+  boardColumnsCount: undefined,
   table: undefined,
   goalContent: undefined,
-  clues: undefined,
+  boardClues: undefined,
   completion: undefined,
 };
 
@@ -68,18 +68,18 @@ const initialState = {
 export default createReducer(initialState, (builder) => {
   builder
 
-    .addCase(initBoard, (state, action) => {
+    .addCase(initGameBoard, (state, action) => {
       const data = action.payload;
       state.name = data.name;
       state.goalContent = data.content;
-      state.rowsCount = data.content.length;
-      state.columnsCount = data.content[0].length;
+      state.boardRowsCount = data.content.length;
+      state.boardColumnsCount = data.content[0].length;
       state.table = createTable(data.content.length, data.content[0].length);
-      state.clues = generateTableClues(data.content);
+      state.boardClues = generateTableClues(data.content);
       state.completion = 0.0;
     })
 
-    .addCase(setBoardIsLoading, (state, action) => {
+    .addCase(setGameIsLoading, (state, action) => {
       state.isLoading = action.payload;
     })
 

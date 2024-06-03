@@ -1,21 +1,22 @@
+import './App.scss';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import './App.scss';
-import { fetchAndInitBoard } from '../store/api/board';
+import { fetchAvailableGames } from '../store/api/app';
 import Game from './Game';
+import GamesMenu from './GamesMenu';
+
 
 function App() {
-
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAndInitBoard('A'));
+    dispatch(fetchAvailableGames());
   }, [dispatch]);
-
 
   return (
     <div className="App">
+      <GamesMenu />
       <Game />
     </div>
   );

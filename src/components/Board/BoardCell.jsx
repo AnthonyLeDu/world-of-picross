@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getBoardTableCell } from '../../store/selectors/board';
-import { toggleCellON, toggleCellOFF } from '../../store/actions/board';
+import { getBoardTableCell } from '../../store/selectors/game';
+import { toggleCellON, toggleCellOFF } from '../../store/actions/game';
 import './index.scss';
 
 function BoardCell({ rowIndex, columnIndex }) {

@@ -1,0 +1,38 @@
+.games-menu {
+  display: flex;
+  width: 800px;
+  margin: auto;
+  justify-content: center;
+  gap: 2rem;
+  overflow-x: scroll;
+
+  &-card {
+    height: 5rem;
+    aspect-ratio: 1;
+    text-align: center;
+    background-color: $light-grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lightcoral;
+    }
+
+    &--current {
+      background-color: coral;
+
+      &:hover {
+        cursor: default;
+        background-color: coral;
+      }
+    }
+
+    &__title {
+      font-weight: bold;
+      font-size: 1.5em;
+
+    }
+  }
+}

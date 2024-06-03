@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { getBoardRowsCount } from '../../store/selectors/board';
+import { getBoardRowsCount } from '../../store/selectors/game';
 import './index.scss';
 import BoardRow from './BoardRow';
 

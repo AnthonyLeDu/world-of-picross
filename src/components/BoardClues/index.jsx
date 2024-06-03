@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import './index.scss';
 import PropTypes from 'prop-types';
-import { getBoardColumnsCount, getBoardRowsCount } from '../../../store/selectors/board';
+import { getBoardColumnsCount, getBoardRowsCount } from '../../store/selectors/game';
 import BoardCluesRow from './BoardCluesRow';
 
 function BoardClues({direction, content}) {
