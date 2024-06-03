@@ -17,11 +17,11 @@ const createTable = (rowsCount, columnsCount) => {
   return table;
 };
 
-const generateRowClues = (rowContent) => {
+const generateLineClues = (lineContent) => {
   const clues = [];
   let lastValue = 0;
-  for (let i = 0; i < rowContent.length; i++) {
-    if (rowContent[i] === 1) {
+  for (let i = 0; i < lineContent.length; i++) {
+    if (lineContent[i] === 1) {
       if (lastValue === 0) {
         lastValue = 1;
         clues.push(1);
@@ -31,6 +31,10 @@ const generateRowClues = (rowContent) => {
         clues[clues.length - 1] += 1;
       }
     }
+  }
+  // No cell ON in this line
+  if (clues.length === 0) {
+    clues.push(0);
   }
   return clues;
 };
@@ -42,11 +46,9 @@ const generateRowClues = (rowContent) => {
 const generateTableClues = (rowsContent) => {
   const columnsContent = rowsContent.map((_, col) => rowsContent.map(row => row[col]));
   const clues = {
-    rows: rowsContent.map(row => generateRowClues(row)),
-    columns: columnsContent.map(col => generateRowClues(col))
+    rows: rowsContent.map(row => generateLineClues(row)),
+    columns: columnsContent.map(col => generateLineClues(col))
   };
-  console.log('CLUES:');
-  console.log(clues);
   return clues;
 };
 

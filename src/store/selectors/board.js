@@ -31,19 +31,23 @@ export const getBoardCompletion = (state) => {
   if (currentTable.length !== goalContent.length) {
     throw new Error('Compared boards have a different number of rows.');
   }
-  
+
   const completedCellsCount = currentTable.map((row, i) => {
     if (row.length !== goalContent[i].length) {
-      throw new Error('Comapred rows have a different number of columns.');
+      throw new Error('Compared rows have a different number of columns.');
     }
     return row.reduce(
       (acc, value, j) => {
-        return acc += (value.checkState === Boolean(goalContent[i][j]) ? 1 : 0);
+        if (Boolean(goalContent[i][j])) {  // expected to be ON
+          return acc += (value.checkState === true ? 1 : 0);
+        }
+        // expected to be OFF
+        return acc += (value.checkState !== true ? 1 : 0);
       },
       0,
     );
   })
-  .reduce((acc, value) => acc + value, 0);
+    .reduce((acc, value) => acc + value, 0);
 
-  return completedCellsCount / (currentTable.length * currentTable[0].length);  
+  return completedCellsCount / (currentTable.length * currentTable[0].length);
 };

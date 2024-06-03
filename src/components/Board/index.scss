@@ -3,38 +3,31 @@
   display: grid;
   width: fit-content;
   margin: 0 auto;
-  border: 2px solid #555;
+  border: 2px solid #333;
   
   &-row {
     display: flex;
-    border-bottom: 1px solid #555;
+    border-top: 1px solid #555;
     
-    &:last-of-type {
-      border-bottom: none;
+    &:nth-of-type(6n) {
+      border-top: 2px solid #333;
+    }
+
+    &:first-of-type {
+      border-top: none;
     }
     
-    &:nth-of-type(2n) {
-      // background-color: #eee;
-    }
-    
-    &:nth-of-type(5n) {
-      border-bottom-color: #000;
-    }
   }
   
   &-cell {
-    border-right: 1px solid #555;
+    border-left: 1px solid #555;
 
-    &:last-of-type {
-      border-right: none;
+    &:first-of-type {
+      border: none;
     }
 
-    &:nth-of-type(5n) {
-      border-right-color: #000;
-    }
-
-    &:nth-of-type(2n) {
-      // background-color: #eee;
+    &:nth-of-type(6n) {
+      border-left: 2px solid #333;
     }
 
     &--on {
@@ -42,7 +35,24 @@
     }
     
     &--off {
-      background-color: gray;
+      position: relative;
+
+      &:before, &:after {
+        position: absolute;
+        content: "";
+        left: calc(50% - 0.5px);
+        height: 100%;
+        width: 1px;
+        background-color: #333;
+      }
+      
+      &:before {
+        transform: rotate(45deg);
+      }
+
+      &:after {
+        transform: rotate(-45deg);
+      }
     }
 
   }

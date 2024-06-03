@@ -6,6 +6,7 @@
   &--columns {
     flex-direction: row;
     margin-left: auto;
+    margin-right: 2px;
     
     .board-clues__row {
       flex-direction: column;
@@ -14,17 +15,26 @@
       &:last-of-type {
         border-right: none;
       }
+      
+      &:nth-of-type(5n) {
+        border-right: 2px solid #888;
+      }
     }
   }
   
   &--rows {
     flex-direction: column;
+    margin-top: 2px;
     
     .board-clues__row {
       border-bottom: 1px solid #bbb;
       
       &:last-of-type {
         border-bottom: none;
+      }
+
+      &:nth-of-type(5n) {
+        border-bottom: 2px solid #888;
       }
     }
   }
