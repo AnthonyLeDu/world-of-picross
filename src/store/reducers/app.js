@@ -18,7 +18,6 @@ export default createReducer(initialState, (builder) => {
     })
 
     .addCase(setCurrentGame, (state, action) => {
-      console.log(action.payload);
       state.currentGame = action.payload;
     })
 

@@ -1,3 +1,4 @@
+import { API_URL } from './_env';
 import { initGameBoard, setGameIsLoading } from '../actions/game';
 
 const validateBoardData = (data) => {
@@ -10,13 +11,9 @@ const validateBoardData = (data) => {
 
 export const fetchAndInitBoard = (name) => async (dispatch) => {
   dispatch(setGameIsLoading(true));
-  fetch(`data/games/${name}.json`)
-  .then((response) => response.json()
-  .then((data) => {
-    data.name = name;
-    validateBoardData(data);
-    dispatch(initGameBoard(data));
-    dispatch(setGameIsLoading(false));
-  }))
-    .catch((error) => console.error(`Error while fetching '${name}' board data: ${error}`));
+  const response = await fetch(`${API_URL}/game/${name}`);
+  const data = await response.json();
+  validateBoardData(data);
+  dispatch(initGameBoard(data));
+  dispatch(setGameIsLoading(false));
 };

@@ -19,7 +19,6 @@ function Game() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(currentGame);
     if (currentGame) {
       dispatch(fetchAndInitBoard(currentGame));
     }
