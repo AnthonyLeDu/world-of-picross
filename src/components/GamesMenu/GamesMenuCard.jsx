@@ -1,37 +1,45 @@
 import PropTypes from 'prop-types';
 import './index.scss';
-import { setCurrentGame } from '../../store/actions/app';
+import { setCurrentGameId } from '../../store/actions/app';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentGame } from '../../store/selectors/app';
+import { getCurrentGameId } from '../../store/selectors/app';
+import Game from '../../models/game';
+
 
 function GamesMenuCard({ game }) {
-  
+
   const dispatch = useDispatch();
-  const currentGame = useSelector(getCurrentGame);
+  const currentGameId = useSelector(getCurrentGameId);
 
   const handleClick = () => {
-     dispatch(setCurrentGame(game.id));
+    dispatch(setCurrentGameId(game.id));
   };
 
-  const className = 'games-menu-card' + (currentGame === game.name ? ' games-menu-card--current' : '');
-  
+  const isValidContent = game.isValidContent();
+  const clickHandler = isValidContent ? handleClick : null;
+
+  let className = 'games-menu-card';
+  if (currentGameId === game.id) className += ' games-menu-card--current';
+  if (!isValidContent) className += ' games-menu-card--invalid';
+
   return (
-    <div className={className} onClick={handleClick}>
+    <div className={className} onClick={clickHandler}>
       <h3 className="games-menu-card__title">{game.name}</h3>
-      <p>{`${game.rowsCount}x${game.colsCount}`}</p>
-      <p>Dif. {game.difficulty}</p>
+      {isValidContent ? (
+        <>
+          <p>{`${game.getRowsCount()}x${game.getColumnsCount()}`}</p>
+          <p>Dif. {game.difficulty}</p>
+        </>
+      ) : (
+        <p>Invalid content</p>
+      )
+      }
     </div>
   );
 }
 
 GamesMenuCard.propTypes = {
-  game: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    rowsCount: PropTypes.number.isRequired,
-    colsCount: PropTypes.number.isRequired,
-    difficulty: PropTypes.number.isRequired,
-  })
+  game: PropTypes.instanceOf(Game)
 };
 
 export default GamesMenuCard;

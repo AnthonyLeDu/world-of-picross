@@ -1,10 +1,17 @@
-export const getGameIsLoading = (state) => state.game.isLoading;
+import { getGame } from '../../models/game';
 
-export const getBoardRowsCount = (state) => state.game.boardRowsCount;
+export const getBoardRowsCount = (state) => {
+  return getGame(state.game.id).getRowsCount();
+};
 
-export const getBoardColumnsCount = (state) => state.game.boardColumnsCount;
+export const getBoardColumnsCount = (state) => {
+  return getGame(state.game.id).getColumnsCount();
+};
 
-export const getGameName = (state) => state.game.name;
+export const getGameName = (state) => {
+  if (state.game.id === undefined) return undefined;
+  return getGame(state.game.id).name;
+};
 
 export const getBoardClues = (state) => state.game.boardClues;
 
@@ -20,25 +27,27 @@ export const getBoardTableCell = (state, row, column) => {
  * @param {*} state Reducer state.
  */
 export const getCompletion = (state) => {
+  const game = getGame(state.game.id);
+  if (game === undefined) return undefined;
+
   const currentTable = state.game.table;
-  const goalContent = state.game.goalContent;
   if (currentTable === undefined) {
     return undefined;
   }
   if (currentTable.length === 0) {
     throw new Error('Current board\'s table is empty.');
   }
-  if (currentTable.length !== goalContent.length) {
+  if (currentTable.length !== game.content.length) {
     throw new Error('Compared boards have a different number of rows.');
   }
 
   const completedCellsCount = currentTable.map((row, i) => {
-    if (row.length !== goalContent[i].length) {
+    if (row.length !== game.content[i].length) {
       throw new Error('Compared rows have a different number of columns.');
     }
     return row.reduce(
       (acc, value, j) => {
-        if (Boolean(goalContent[i][j])) {  // expected to be ON
+        if (Boolean(game.content[i][j])) {  // expected to be ON
           return acc += (value.checkState === true ? 1 : 0);
         }
         // expected to be OFF

@@ -1,24 +1,24 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setAvailableGames, setCurrentGame, setIsLoadingGames } from '../actions/app';
+import { setAvailableGamesIds, setCurrentGameId, setIsLoadingGames } from '../actions/app';
 
 
 // Initial state
 const initialState = {
   isLoadingGames: true,
-  availableGames: undefined,
-  currentGame: undefined,
+  availableGamesIds: undefined,
+  currentGameId: undefined,
 };
 
 // Reducer
 export default createReducer(initialState, (builder) => {
   builder
 
-    .addCase(setAvailableGames, (state, action) => {
-      state.availableGames = action.payload;
+    .addCase(setAvailableGamesIds, (state, action) => {
+      state.availableGamesIds = action.payload;
     })
 
-    .addCase(setCurrentGame, (state, action) => {
-      state.currentGame = action.payload;
+    .addCase(setCurrentGameId, (state, action) => {
+      state.currentGameId = action.payload;
     })
 
     .addCase(setIsLoadingGames, (state, action) => {

@@ -28,6 +28,15 @@
         background-color: coral;
       }
     }
+    
+    &--invalid {
+      background-color: $dark-grey;
+      color: $light-grey;
+      &:hover {
+        cursor: not-allowed;
+        background-color: $dark-grey;
+      }
+    }
 
     &__title {
       font-weight: bold;

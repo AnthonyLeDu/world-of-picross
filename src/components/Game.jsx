@@ -4,36 +4,35 @@ import { useEffect } from 'react';
 import BoardClues from './BoardClues';
 import Board from './Board';
 import { useSelector } from 'react-redux';
-import { getBoardClues, getCompletion, getGameIsLoading, getGameName } from '../store/selectors/game';
-import { getCurrentGame } from '../store/selectors/app';
-import { fetchAndInitBoard } from '../store/api/game';
+import { getBoardClues, getCompletion, getGameName } from '../store/selectors/game';
+import { getCurrentGameId } from '../store/selectors/app';
+import { initGameBoard } from '../store/actions/game';
 
 
 function Game() {
 
-  const boardIsLoading = useSelector(getGameIsLoading);
   const boardName = useSelector(getGameName);
   const boardClues = useSelector(getBoardClues);
-  const boardCompletion = useSelector(getCompletion);
-  const currentGame = useSelector(getCurrentGame);
+  const completion = useSelector(getCompletion);
+  const currentGameId = useSelector(getCurrentGameId);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentGame) {
-      dispatch(fetchAndInitBoard(currentGame));
+    if (currentGameId) {
+      dispatch(initGameBoard(currentGameId));
     }
-  }, [dispatch, currentGame]);
+  }, [dispatch, currentGameId]);
 
   return (
     <div className="game">
-      {currentGame &&
+      {currentGameId &&
         <>
           <p>Left click : Toggle ON | Right-click : Toggle OFF</p>
 
-          {!boardIsLoading &&
-            <>
-              <h1>{boardName}</h1>
+          <h1>{boardName}</h1>
 
+          {boardClues && (
+            <>
               <div className='game-upper'>
                 <BoardClues
                   direction='columns'
@@ -49,9 +48,10 @@ function Game() {
                 <Board />
               </div>
 
-              <p>Completion : {(boardCompletion * 100).toFixed(0)} %</p>
+              <p>Completion : {(completion * 100).toFixed(0)} %</p>
             </>
-          }
+          )}
+
         </>
       }
     </div>

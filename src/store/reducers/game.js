@@ -1,33 +1,33 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initGameBoard, toggleCellON, toggleCellOFF, setGameIsLoading } from '../actions/game';
+import { initGameBoard, toggleCellON, toggleCellOFF } from '../actions/game';
+import { getGame } from '../../models/game';
 
-const createTableCell = () => ({
-  checkState: null,
-});
 
-const createTable = (rowsCount, columnsCount) => {
+const createTable = (gameId) => {
+  const game = getGame(gameId);
   const table = [];
-  for (let row = 0; row < rowsCount; row += 1) {
+  for (let row = 0; row < game.getRowsCount(); row += 1) {
     table.push([]);
-    for (let col = 0; col < columnsCount; col += 1) {
-      table[row].push(createTableCell());
+    for (let col = 0; col < game.getColumnsCount(); col += 1) {
+      table[row].push({checkState: null});
     }
   }
   return table;
 };
 
+
 const generateLineClues = (lineContent) => {
   const clues = [];
-  let lastValue = 0;
+  let lastValue = false;
   for (let i = 0; i < lineContent.length; i++) {
-    if (lineContent[i] === 1) {
-      if (lastValue === 0) {
-        lastValue = 1;
+    if (lineContent[i] === true) {
+      if (lastValue === false) {
+        lastValue = true;
         clues.push(1);
       }
       else {
-        lastValue = 0;
+        lastValue = false;
         clues[clues.length - 1] += 1;
       }
     }
@@ -39,48 +39,45 @@ const generateLineClues = (lineContent) => {
   return clues;
 };
 
+
 /**
  * Generate the clues values from the given table content.
  * @param {Number[][]} tableContent 
  */
-const generateTableClues = (rowsContent) => {
-  const columnsContent = rowsContent.map((_, col) => rowsContent.map(row => row[col]));
+const generateTableClues = (gameId) => {
+  const game = getGame(gameId);
+  // Get content column by column
+  const columnsContent = [];
+  for (let col = 0; col < game.content.length ; col++) {
+    columnsContent.push(game.content.map(row => row[col]));
+  }
   const clues = {
-    rows: rowsContent.map(row => generateLineClues(row)),
+    rows: game.content.map(row => generateLineClues(row)),
     columns: columnsContent.map(col => generateLineClues(col))
   };
   return clues;
 };
 
+
 // Initial state
 const initialState = {
-  isLoading: true,
-  name: undefined,
-  boardRowsCount: undefined,
-  boardColumnsCount: undefined,
+  id: undefined,
   table: undefined,
-  goalContent: undefined,
   boardClues: undefined,
   completion: undefined,
 };
+
 
 // Reducer
 export default createReducer(initialState, (builder) => {
   builder
 
     .addCase(initGameBoard, (state, action) => {
-      const data = action.payload;
-      state.name = data.name;
-      state.goalContent = data.content;
-      state.boardRowsCount = data.content.length;
-      state.boardColumnsCount = data.content[0].length;
-      state.table = createTable(data.content.length, data.content[0].length);
-      state.boardClues = generateTableClues(data.content);
+      const gameId = action.payload;
+      state.id = gameId;
+      state.table = createTable(gameId);
+      state.boardClues = generateTableClues(gameId);
       state.completion = 0.0;
-    })
-
-    .addCase(setGameIsLoading, (state, action) => {
-      state.isLoading = action.payload;
     })
 
     .addCase(toggleCellON, (state, action) => {

@@ -1,10 +1,12 @@
 import { API_URL } from './_env';
-import { setAvailableGames, setIsLoadingGames } from '../actions/app';
+import { setAvailableGamesIds, setIsLoadingGames } from '../actions/app';
+import {newGame} from '../../models/game';
+
 
 export const fetchAvailableGames = () => async (dispatch) => {
   dispatch(setIsLoadingGames(true));
   const response = await fetch(`${API_URL}/games`);
-  const games = await response.json();
-  dispatch(setAvailableGames(games));
+  const data = await response.json();
+  dispatch(setAvailableGamesIds(data.map((g) => newGame(g).id)));
   dispatch(setIsLoadingGames(false));
 };

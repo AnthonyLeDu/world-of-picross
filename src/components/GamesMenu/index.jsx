@@ -4,9 +4,9 @@ import { getAvailableGames } from '../../store/selectors/app';
 import GamesMenuCard from './GamesMenuCard';
 
 function GamesMenu() {
-
+  
   const availableGames = useSelector(getAvailableGames);
-  console.log(availableGames);
+  // console.log('availableGames:', availableGames);
 
   return (
     <div className="games-menu">
