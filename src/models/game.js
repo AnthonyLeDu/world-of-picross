@@ -3,13 +3,15 @@ export default class Game {
   name;
   difficulty;
   content;
+  creator_id;
   validContent;
 
-  constructor({ id, name, difficulty, content }) {
+  constructor({ id, name, difficulty, content, creator_id }) {
     this.id = id;
     this.name = name;
     this.difficulty = difficulty;
     this.content = content;
+    this.creator_id = creator_id;
   }
 
   getRowsCount() {
