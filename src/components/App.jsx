@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { fetchAvailableGames } from '../store/api/app';
 import Game from './Game';
 import GamesMenu from './GamesMenu';
+import Login from './Login';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <div className="App">
+      <Login />
       <GamesMenu />
       <Game />
     </div>

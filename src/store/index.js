@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import boardReduced from './reducers/game';
-import appReduced from './reducers/app';
+import boardReducer from './reducers/game';
+import appReducer from './reducers/app';
+import userReducer from './reducers/user';
 
 const store = configureStore({
   reducer: {
-    app: appReduced,
-    game: boardReduced,
+    app: appReducer,
+    game: boardReducer,
+    user: userReducer,
   },
 });
 
