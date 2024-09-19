@@ -23,7 +23,7 @@ export const getBoardTableCell = (state, row, column) => {
 
 /**
  * Return the completion rate (between 0 and 1) of the given board's
- * content compared to a goal board content (the solution).
+ * table compared to a goal board table (the solution).
  * @param {*} state Reducer state.
  */
 export const getCompletion = (state) => {
@@ -37,21 +37,21 @@ export const getCompletion = (state) => {
   if (currentTable.length === 0) {
     throw new Error('Current board\'s table is empty.');
   }
-  if (currentTable.length !== game.content.length) {
+  if (currentTable.length !== game.table.length) {
     throw new Error('Compared boards have a different number of rows.');
   }
 
   const completedCellsCount = currentTable.map((row, i) => {
-    if (row.length !== game.content[i].length) {
+    if (row.length !== game.table[i].length) {
       throw new Error('Compared rows have a different number of columns.');
     }
     return row.reduce(
-      (acc, value, j) => {
-        if (Boolean(game.content[i][j])) {  // expected to be ON
-          return acc += (value.checkState === true ? 1 : 0);
+      (acc, cell, j) => {
+        const expectedCellState = game.table[i][j];
+        if (expectedCellState) {  // Not null/undefined/false
+          return acc += (cell.state === expectedCellState ? 1 : 0);
         }
-        // expected to be OFF
-        return acc += (value.checkState !== true ? 1 : 0);
+        return acc += 1;
       },
       0,
     );

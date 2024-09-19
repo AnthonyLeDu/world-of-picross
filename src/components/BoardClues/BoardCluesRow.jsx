@@ -12,7 +12,8 @@ function BoardCluesRow({content}) {
             // eslint-disable-next-line react/no-array-index-key
             key={`cell-${i}`}
             index={i}
-            value={content[i]}
+            rgba={content[i].rgba}
+            count={content[i].count}
           />
         ))
     }
@@ -21,7 +22,11 @@ function BoardCluesRow({content}) {
 }
 
 BoardCluesRow.propTypes = {
-  content: PropTypes.arrayOf(PropTypes.number).isRequired,
+  content: PropTypes.arrayOf(
+    PropTypes.shape(
+      BoardCluesCell.propTypes
+    )
+  ).isRequired,
 };
 
 export default BoardCluesRow;

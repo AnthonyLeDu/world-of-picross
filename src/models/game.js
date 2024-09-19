@@ -1,8 +1,17 @@
+/**
+ * Return the last key of a given object.
+ * @param {Object} obj 
+ */
+const getMaxKey = (obj) => {
+  return Math.max(...Object.keys(obj));
+};
+
 export default class Game {
   id;
   name;
   difficulty;
-  content;
+  dbContent;
+  table;
   creator_id;
   validContent;
 
@@ -10,35 +19,67 @@ export default class Game {
     this.id = id;
     this.name = name;
     this.difficulty = difficulty;
-    this.content = content;
+    this.dbContent = content;
     this.creator_id = creator_id;
+    this.table = this.asFullTable();
   }
 
   getRowsCount() {
-    return this.content ? this.content.length : undefined;
+    return this.table ? this.table.length : undefined;
   }
 
   getColumnsCount() {
-    if (!this.content) return undefined;
-    return this.content.reduce(
+    if (!this.table) return undefined;
+    return this.table.reduce(
       (a, b) => a.length > b.length ? a : b
     ).length;
   }
 
   areRowsEven() {
-    return this.content.filter(
-      (row) => row.length !== this.content[0].length
+    return this.table.filter(
+      (row) => row.length !== this.table[0].length
     ).length === 0;
   }
 
   isValidContent() {
     return (
-      this.content !== null
-      && this.content !== undefined
+      this.table !== null
+      && this.table !== undefined
       && this.getRowsCount() !== 0
       && this.getColumnsCount() !== 0
       && this.areRowsEven()
     );
+  }
+
+  /**
+   * Content object coming from database has no data for empty rows or columns.
+   * This function converts it to a full table with every rows and colums.
+   */
+  asFullTable() {
+    const rowsCount = this.dbContent ? getMaxKey(this.dbContent) : undefined;
+    let columnsCount = undefined;
+    if (this.dbContent) {
+      columnsCount = 0;
+      for (const row in this.dbContent) {
+        columnsCount = Math.max(columnsCount, getMaxKey(this.dbContent[row]));
+      }
+    }
+    if (rowsCount === undefined || columnsCount === undefined) {
+      return undefined;
+    }
+
+    const fullContent = [];
+    for (let row = 0; row < rowsCount; row++) {
+      fullContent.push([]);
+      for (let col = 0; col < columnsCount; col++) {
+        fullContent[row].push(
+          this.dbContent[row] ? (
+            this.dbContent[row][col] ? this.dbContent[row][col] : null
+          ) : null
+        );
+      }
+    }
+    return fullContent;
   }
 }
 

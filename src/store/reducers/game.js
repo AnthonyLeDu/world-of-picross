@@ -10,7 +10,7 @@ const createTable = (gameId) => {
   for (let row = 0; row < game.getRowsCount(); row += 1) {
     table.push([]);
     for (let col = 0; col < game.getColumnsCount(); col += 1) {
-      table[row].push({checkState: null});
+      table[row].push({ state: null });
     }
   }
   return table;
@@ -19,25 +19,43 @@ const createTable = (gameId) => {
 
 const generateLineClues = (lineContent) => {
   const clues = [];
-  let lastValue = false;
+  let lastRgba = false;
+  let lastIndex = undefined;
+  // In the content data, only cells with info are stored so we look for gaps
+  // to determine there are empty cells or color changes.
   for (let i = 0; i < lineContent.length; i++) {
-    if (lineContent[i] === true) {
-      if (lastValue === false) {
-        lastValue = true;
-        clues.push(1);
+    const rgba = lineContent[i];
+    if (
+      lastIndex !== undefined  // Not the first cell
+      && i === lastIndex + 1  // Next to the previous cell
+      && JSON.stringify(rgba) === JSON.stringify(lastRgba)  // Same color than previous cell
+    ) {
+      clues[clues.length - 1].count += 1; // Increment cells count
+    }
+    else {
+      if (rgba === null) {
+        lastRgba = false;
       }
       else {
-        lastValue = false;
-        clues[clues.length - 1] += 1;
+        // Add new clue
+        clues.push({
+          rgba: rgba.slice(),  // Copy by value
+          count: 1,
+        });
+        lastRgba = rgba.slice();
       }
     }
-  }
+    lastIndex = i;
+  };
+
   // No cell ON in this line
   if (clues.length === 0) {
-    clues.push(0);
+    clues.push(null);
   }
   return clues;
 };
+
+
 
 
 /**
@@ -46,14 +64,14 @@ const generateLineClues = (lineContent) => {
  */
 const generateTableClues = (gameId) => {
   const game = getGame(gameId);
-  // Get content column by column
+  const fullContent = game.asFullTable();
   const columnsContent = [];
-  for (let col = 0; col < game.content.length ; col++) {
-    columnsContent.push(game.content.map(row => row[col]));
+  for (let col = 0; col < game.getColumnsCount(); col++) {
+    columnsContent.push(fullContent.map(row => row[col]));
   }
   const clues = {
-    rows: game.content.map(row => generateLineClues(row)),
-    columns: columnsContent.map(col => generateLineClues(col))
+    rows: fullContent.map(rowContent => generateLineClues(rowContent)),
+    columns: columnsContent.map(colContent => generateLineClues(colContent))
   };
   return clues;
 };
@@ -82,24 +100,22 @@ export default createReducer(initialState, (builder) => {
 
     .addCase(toggleCellON, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
-      switch (cell.checkState) {
-        case true:
-          cell.checkState = null; // marked as empty
-          break;
-        default:
-          cell.checkState = true; // default
-          break;
+      if (cell.state === null || cell.state === false){
+        cell.state = action.payload.rgba; // set the payload color and alpha
+      }
+      else {
+        cell.state = null; // marked as empty
       }
     })
 
     .addCase(toggleCellOFF, (state, action) => {
       const cell = state.table.at(action.payload.row).at(action.payload.column);
-      switch (cell.checkState) {
+      switch (cell.state) {
         case false:
-          cell.checkState = null; // marked as empty
+          cell.state = null; // marked as empty
           break;
         default:
-          cell.checkState = false; // default
+          cell.state = false; // cross
           break;
       }
     });

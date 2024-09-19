@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { getBoardColumnsCount, getBoardRowsCount } from '../../store/selectors/game';
 import BoardCluesRow from './BoardCluesRow';
 
-function BoardClues({direction, content}) {
+function BoardClues({ direction, content }) {
 
   const rowsCount = useSelector(getBoardRowsCount);
   const columnsCount = useSelector(getBoardColumnsCount);
@@ -12,8 +12,8 @@ function BoardClues({direction, content}) {
 
   return (
     <div className={`board-clues board-clues--${direction}`}>
-    {
-      [...Array(itemsCount)].map((v, i) => (
+      {
+        [...Array(itemsCount)].map((v, i) => (
           <BoardCluesRow
             // eslint-disable-next-line react/no-array-index-key
             key={`board-clues-${direction}-item-${i}`}
@@ -21,16 +21,14 @@ function BoardClues({direction, content}) {
             content={content[i]}
           />
         ))
-    }
+      }
     </div>
   );
 }
 
 BoardClues.propTypes = {
   direction: PropTypes.string.isRequired,
-  content: PropTypes.arrayOf(
-    PropTypes.arrayOf(PropTypes.number)
-  ).isRequired,
+  content: PropTypes.array.isRequired,
 };
 
 export default BoardClues;

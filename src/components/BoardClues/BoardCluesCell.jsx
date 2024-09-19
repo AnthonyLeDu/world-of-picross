@@ -2,16 +2,17 @@ import './index.scss';
 import PropTypes from 'prop-types';
 
 
-function BoardCluesCell({value}) {
+function BoardCluesCell({rgba, count}) {
   return (
     <div className={'cell board-clues__row__cell'}>
-      {value}
+      {count}
     </div>
   );
 }
 
 BoardCluesCell.propTypes = {
-  value: PropTypes.number.isRequired,
+  rgba: PropTypes.arrayOf(PropTypes.number).isRequired,
+  count: PropTypes.number.isRequired
 };
 
 export default BoardCluesCell;

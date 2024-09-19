@@ -13,7 +13,6 @@ export const logUserIn = (formData) => async (dispatch) => {
       },
       body: JSON.stringify(formData),
     });
-  // console.log(response);
   dispatch(setIsLoggingIn(false));
   if (response.ok) {
     dispatch(setIsLoggedIn(true));
