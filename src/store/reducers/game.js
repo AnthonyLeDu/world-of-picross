@@ -2,7 +2,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba } from '../actions/game';
 import { getGame } from '../../models/game';
-import { act } from 'react';
 import { areEqualRgbas } from '../../utils';
 
 
