@@ -2,52 +2,67 @@
   width: fit-content;
   height: fit-content;
   display: flex;
-  
+
   &--columns {
     flex-direction: row;
     margin-left: auto;
     margin-right: 2px;
-    
+
     .board-clues__row {
       flex-direction: column;
-      border-left: 1px solid $light-grey;
-      
-      &:first-of-type {
-        border-left: none;
+
+      &__cell {
+        border-left: 1px solid white;
       }
-      
-      &:nth-of-type(6n) {
-        border-left: 2px solid $mid-grey;
-      }
-    }
-  }
-  
-  &--rows {
-    flex-direction: column;
-    margin-top: 2px;
-    
-    .board-clues__row {
-      border-top: 1px solid $light-grey;
-      
+
       &:first-of-type {
-        border-top: none;
+        .board-clues__row__cell {
+          border-left: none;
+        }
       }
 
       &:nth-of-type(6n) {
-        border-top: 2px solid $mid-grey;
+        .board-clues__row__cell {
+          border-left: 2px solid $mid-grey;
+        }
       }
     }
   }
-  
+
+  &--rows {
+    flex-direction: column;
+    margin-top: 2px;
+
+    .board-clues__row {
+      &__cell {
+        border-top: 1px solid white;
+      }
+
+      &:first-of-type {
+        .board-clues__row__cell {
+          border-top: none;
+        }
+      }
+
+      &:nth-of-type(6n) {
+        .board-clues__row__cell {
+          border-top: 2px solid $mid-grey;
+        }
+
+      }
+    }
+  }
+
   &__row {
     display: flex;
     justify-content: flex-end;
-    
+    gap: 1px;
+
     &:nth-of-type(2n) {
       background-color: #0001;
     }
-    
-    
+
+
     &__cell {
       display: flex;
       justify-content: center;
@@ -55,6 +70,5 @@
     }
 
   }
-  
-}
 
+}

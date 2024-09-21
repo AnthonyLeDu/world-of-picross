@@ -1,7 +1,18 @@
 .game{
   width: fit-content;
-  margin: auto;
+  margin: 3rem auto;
 
+  &-color {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    padding: .5rem 0;
+
+    &__square {
+      width: 2rem;
+      height: 1rem;
+    }
+  }
   &-lower {
     display: flex;
     width: fit-content;

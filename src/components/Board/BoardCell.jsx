@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getBoardTableCell } from '../../store/selectors/game';
+import { getBoardTableCell, getCurrentRgba } from '../../store/selectors/game';
 import { toggleCellON, toggleCellOFF } from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
@@ -10,12 +10,13 @@ function BoardCell({ rowIndex, columnIndex }) {
   const dispatch = useDispatch();
   const tableCell = useSelector((state) => getBoardTableCell(state, rowIndex, columnIndex));
   const [cellColor, setCellColor] = useState(null);
+  const currentRgba = useSelector(getCurrentRgba);
 
   const toggleON = () => {
     dispatch(toggleCellON({
       row: rowIndex,
       column: columnIndex,
-      rgba: [255, 0, 0, 255],  // TODO: use a color picker from colors in the table cells rgbas
+      rgba: currentRgba,
     }));
   };
   const toggleOFF = (e) => {

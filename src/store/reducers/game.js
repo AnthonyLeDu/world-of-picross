@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initGameBoard, toggleCellON, toggleCellOFF } from '../actions/game';
+import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba } from '../actions/game';
 import { getGame } from '../../models/game';
+import { act } from 'react';
 
 
 const createTable = (gameId) => {
@@ -83,6 +84,7 @@ const initialState = {
   table: undefined,
   boardClues: undefined,
   completion: undefined,
+  currentRgba: [0, 0, 0, 1.0],
 };
 
 
@@ -118,5 +120,9 @@ export default createReducer(initialState, (builder) => {
           cell.state = false; // cross
           break;
       }
+    })
+    
+    .addCase(setCurrentRgba, (state, action) => {
+      state.currentRgba = action.payload;
     });
 });

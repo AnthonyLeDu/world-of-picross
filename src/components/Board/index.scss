@@ -29,10 +29,6 @@
     &:nth-of-type(6n) {
       border-left: 2px solid $mid-grey;
     }
-
-    &--on {
-      background-color: black;
-    }
     
     &--off {
       position: relative;
@@ -41,7 +37,8 @@
         position: absolute;
         content: "";
         left: calc(50% - 0.5px);
-        height: 100%;
+        top: calc(15% - 0.5px);
+        height: 75%;
         width: 1px;
         background-color: $dark-grey;
       }

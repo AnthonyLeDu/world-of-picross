@@ -4,9 +4,10 @@ import { useEffect } from 'react';
 import BoardClues from './BoardClues';
 import Board from './Board';
 import { useSelector } from 'react-redux';
-import { getBoardClues, getCompletion, getGameName } from '../store/selectors/game';
+import { getBoardClues, getCompletion, getGameName, getCurrentRgba } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
 import { initGameBoard } from '../store/actions/game';
+import { rgbaStringFromArray } from '../utils';
 
 
 function Game() {
@@ -15,6 +16,7 @@ function Game() {
   const boardClues = useSelector(getBoardClues);
   const completion = useSelector(getCompletion);
   const currentGameId = useSelector(getCurrentGameId);
+  const currentRgba = useSelector(getCurrentRgba);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +30,14 @@ function Game() {
       {currentGameId &&
         <>
           <p>Left click : Toggle ON | Right-click : Toggle OFF</p>
+          <p>Click on clues to change color.</p>
+          <div className="game-color">
+            <p>Current color :</p>
+            <div
+              className='game-color__square'
+              style={{backgroundColor: rgbaStringFromArray(currentRgba)}}
+            />
+          </div>
 
           <h1>{boardName}</h1>
 

@@ -13,6 +13,10 @@ export const getGameName = (state) => {
   return getGame(state.game.id).name;
 };
 
+export const getCurrentRgba = (state) => {
+  return state.game.currentRgba;
+};
+
 export const getBoardClues = (state) => state.game.boardClues;
 
 export const getBoardTableCell = (state, row, column) => {
