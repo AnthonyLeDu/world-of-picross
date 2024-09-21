@@ -1,4 +1,5 @@
 import { getGame } from '../../models/game';
+import { areEqualRgbas } from '../../utils';
 
 export const getBoardRowsCount = (state) => {
   return getGame(state.game.id).getRowsCount();
@@ -53,7 +54,7 @@ export const getCompletion = (state) => {
       (acc, cell, j) => {
         const expectedCellState = game.table[i][j];
         if (expectedCellState) {  // Not null/undefined/false
-          return acc += (cell.state === expectedCellState ? 1 : 0);
+          return acc += (areEqualRgbas(cell.state, expectedCellState) ? 1 : 0);
         }
         return acc += 1;
       },

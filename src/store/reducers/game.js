@@ -3,6 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba } from '../actions/game';
 import { getGame } from '../../models/game';
 import { act } from 'react';
+import { areEqualRgbas } from '../../utils';
 
 
 const createTable = (gameId) => {
@@ -29,7 +30,7 @@ const generateLineClues = (lineContent) => {
     if (
       lastIndex !== undefined  // Not the first cell
       && i === lastIndex + 1  // Next to the previous cell
-      && JSON.stringify(rgba) === JSON.stringify(lastRgba)  // Same color than previous cell
+      && areEqualRgbas(rgba, lastRgba)  // Same color than previous cell
     ) {
       clues[clues.length - 1].count += 1; // Increment cells count
     }
