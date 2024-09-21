@@ -56,12 +56,12 @@ export default class Game {
    * This function converts it to a full table with every rows and colums.
    */
   asFullTable() {
-    const rowsCount = this.dbContent ? getMaxKey(this.dbContent) : undefined;
+    const rowsCount = this.dbContent ? getMaxKey(this.dbContent) + 1 : undefined;
     let columnsCount = undefined;
     if (this.dbContent) {
       columnsCount = 0;
       for (const row in this.dbContent) {
-        columnsCount = Math.max(columnsCount, getMaxKey(this.dbContent[row]));
+        columnsCount = Math.max(columnsCount, getMaxKey(this.dbContent[row]) + 1);
       }
     }
     if (rowsCount === undefined || columnsCount === undefined) {
