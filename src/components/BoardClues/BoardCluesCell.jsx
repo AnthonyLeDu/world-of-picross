@@ -41,7 +41,7 @@ function BoardCluesCell({ rgba, count }) {
 
   return (
     <div
-      className={'cell board-clues__row__cell'}
+      className={'cell board-clues__line__cell'}
       style={{
         backgroundColor,
         color,

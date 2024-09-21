@@ -6,8 +6,11 @@ import { getBoardColumnsCount } from '../../store/selectors/game';
 
 function BoardRow({ index }) {
   const columnsCount = useSelector(getBoardColumnsCount);
+
   return (
-    <div className="board-row">
+    <div
+      className="board-row"
+    >
       {
         [...Array(columnsCount)].map((v, i) => (
           <BoardCell

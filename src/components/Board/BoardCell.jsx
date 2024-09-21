@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getBoardTableCell, getCurrentRgba } from '../../store/selectors/game';
-import { toggleCellON, toggleCellOFF } from '../../store/actions/game';
+import { toggleCellON, toggleCellOFF, setCurrentRow, setCurrentColumn } from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
 
@@ -43,6 +43,10 @@ function BoardCell({ rowIndex, columnIndex }) {
       style={{ backgroundColor: cellColor }}
       onClick={toggleON}
       onContextMenu={toggleOFF}
+      onMouseEnter={() => {
+        dispatch(setCurrentRow(rowIndex));
+        dispatch(setCurrentColumn(columnIndex));
+      }}
     />
   );
 }

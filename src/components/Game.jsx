@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import BoardClues from './BoardClues';
 import Board from './Board';
 import { useSelector } from 'react-redux';
-import { getBoardClues, getCompletion, getGameName, getCurrentRgba } from '../store/selectors/game';
+import { getBoardClues, getCompletion, getGameName, getCurrentRgba, getCurrentRow, getCurrentColumn } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
 import { initGameBoard } from '../store/actions/game';
 import { rgbaStringFromArray } from '../utils';
@@ -17,6 +17,8 @@ function Game() {
   const completion = useSelector(getCompletion);
   const currentGameId = useSelector(getCurrentGameId);
   const currentRgba = useSelector(getCurrentRgba);
+  const currentRow = useSelector(getCurrentRow);
+  const currentColumn = useSelector(getCurrentColumn);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,6 +40,7 @@ function Game() {
               style={{backgroundColor: rgbaStringFromArray(currentRgba)}}
             />
           </div>
+          <p>Current row: {currentRow || '-'} | Current column: {currentColumn || '-'}</p>
 
           <h1>{boardName}</h1>
 

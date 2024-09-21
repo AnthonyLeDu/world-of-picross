@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba } from '../actions/game';
+import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba, setCurrentRow, setCurrentColumn } from '../actions/game';
 import { getGame } from '../../models/game';
 import { areEqualRgbas } from '../../utils';
 
@@ -85,6 +85,8 @@ const initialState = {
   boardClues: undefined,
   completion: undefined,
   currentRgba: [0, 0, 0, 1.0],
+  currentRow: undefined,
+  currentColumn: undefined,
 };
 
 
@@ -124,5 +126,13 @@ export default createReducer(initialState, (builder) => {
     
     .addCase(setCurrentRgba, (state, action) => {
       state.currentRgba = action.payload;
+    })
+    
+    .addCase(setCurrentRow, (state, action) => {
+      state.currentRow = action.payload;
+    })
+    
+    .addCase(setCurrentColumn, (state, action) => {
+      state.currentColumn = action.payload;
     });
 });

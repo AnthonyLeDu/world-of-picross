@@ -18,6 +18,14 @@ export const getCurrentRgba = (state) => {
   return state.game.currentRgba;
 };
 
+export const getCurrentRow = (state) => {
+  return state.game.currentRow;
+};
+
+export const getCurrentColumn = (state) => {
+  return state.game.currentColumn;
+};
+
 export const getBoardClues = (state) => state.game.boardClues;
 
 export const getBoardTableCell = (state, row, column) => {
