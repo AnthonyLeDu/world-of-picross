@@ -1,28 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import './index.scss';
-import { logUserIn } from '../../store/api/user';
+import { getUserProfile, logUserIn } from '../../store/api/user';
 import { getIsLoggedIn, getIsLoggingIn, getLoginMessage } from '../../store/selectors/user';
-import { setLoginMessage } from '../../store/actions/user';
+import { setIsLoggingIn, setLoginMessage } from '../../store/actions/user';
 
 
-const formDataInit = {
+const formContentInit = {
   email: '',
   password: '',
 };
 
 function Login() {
   const dispatch = useDispatch();
-
-  const isLoggedIn = useSelector(getIsLoggedIn);
   const isLoggingIn = useSelector(getIsLoggingIn);
   const loginMessage = useSelector(getLoginMessage);
-  const [formData, setFormData] = useState({ ...formDataInit });
+  const [formContent, setFormContent] = useState({ ...formContentInit });
 
   const handleInputChange = (e) => {
     dispatch(setLoginMessage(''));
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormContent((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -30,8 +28,13 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
+    dispatch(setIsLoggingIn(true));
+    const formData = new FormData(e.target);
     dispatch(logUserIn(formData));
+  };
+
+  const handleRegisterClicked = async (e) => {
+    dispatch(getUserProfile());
   };
 
   return (
@@ -46,7 +49,7 @@ function Login() {
             <input
               type='email'
               name='email'
-              value={formData.email}
+              value={formContent.email}
               placeholder='john.doe@email.com'
               required
               onChange={handleInputChange}
@@ -58,7 +61,7 @@ function Login() {
             <input
               type='password'
               name='password'
-              value={formData.password}
+              value={formContent.password}
               required
               onChange={handleInputChange}
               autoComplete='current-password'
@@ -67,7 +70,7 @@ function Login() {
         </div>
         <div className='login-buttons'>
           <button type='submit'>Log me in</button>
-          <button type='submit'>Register</button>
+          <button onClick={handleRegisterClicked}>Register</button>
         </div>
       </form>
       <p className='login-message'>{loginMessage}</p>

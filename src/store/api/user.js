@@ -1,26 +1,46 @@
 import { API_URL } from './_env';
-import { setIsLoggedIn, setIsLoggingIn, setLoginMessage } from '../actions/user';
+import { setIsLoggedIn, setIsLoggingIn, setLoginMessage, setPseudo } from '../actions/user';
 
 
 export const logUserIn = (formData) => async (dispatch) => {
   dispatch(setIsLoggingIn(true));
   const response = await fetch(
-    `${API_URL}/user/login`,
+    `${API_URL}/token`,
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(formData),
+      body: new URLSearchParams({
+        'username': formData.get('email'),  // OAuth2 expects a 'username' key
+        'password': formData.get('password'),
+      }),
     });
   dispatch(setIsLoggingIn(false));
   if (response.ok) {
+    console.log('Login successful!');
+    dispatch(getUserProfile());
     dispatch(setIsLoggedIn(true));
     dispatch(setLoginMessage('Connected'));
-    const userData = await response.json();
-    console.log(userData);
   } else {
     dispatch(setIsLoggedIn(false));
-    dispatch(setLoginMessage('Failed to log in. Verify your credentials or register if you don\'t have an account yet'));
+    dispatch(setLoginMessage('Failed to log in. Verify your credentials or register if you don\'t have any account yet'));
+  }
+};
+
+
+export const getUserProfile = () => async (dispatch) => {
+  const response = await fetch(
+    `${API_URL}/user/me`,
+    {
+      method: 'GET',
+      credentials: 'include',  // Ensure cookies are sent
+    }
+  );
+  if (response.ok) {
+    const userData = await response.json();
+    dispatch(setPseudo(userData.pseudo));
+    console.log(userData);
+  } else {
   }
 };
