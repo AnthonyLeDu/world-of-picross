@@ -4,12 +4,15 @@ import { setCurrentGameId } from '../../store/actions/app';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentGameId } from '../../store/selectors/app';
 import Game from '../../models/game';
+import { getUserId } from '../../store/selectors/user';
+import classNames from 'classnames';
 
 
 function GamesMenuCard({ game }) {
 
   const dispatch = useDispatch();
   const currentGameId = useSelector(getCurrentGameId);
+  const userId = useSelector(getUserId);
 
   const handleClick = () => {
     dispatch(setCurrentGameId(game.id));
@@ -18,12 +21,15 @@ function GamesMenuCard({ game }) {
   const isValidContent = game.isValidContent();
   const clickHandler = isValidContent ? handleClick : null;
 
-  let className = 'games-menu-card';
-  if (currentGameId === game.id) className += ' games-menu-card--current';
-  if (!isValidContent) className += ' games-menu-card--invalid';
-
   return (
-    <div className={className} onClick={clickHandler}>
+    <div className={classNames(
+      'games-menu-card',
+      {'games-menu-card--current': currentGameId === game.id},
+      {'games-menu-card--user-is-creator': userId === game.creator_id},
+      {'games-menu-card--invalid': !isValidContent}
+    )
+
+    } onClick={clickHandler}>
       <h3 className="games-menu-card__title">{game.name}</h3>
       {isValidContent ? (
         <>

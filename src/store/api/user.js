@@ -1,8 +1,14 @@
 import { API_URL } from './_env';
-import { setIsLoggedIn, setIsLoggingIn, setLoginMessage, setPseudo } from '../actions/user';
+import { setId, setIsLoggedIn, setIsLoggingIn, setLoginMessage, setEmail, setPseudo } from '../actions/user';
 
 
-export const logUserIn = (formData) => async (dispatch) => {
+const getRequestInit = {
+  method: 'GET',
+  credentials: 'include',  // Ensure cookies are sent
+};
+
+
+export const loginWithCredentials = (formData) => async (dispatch) => {
   dispatch(setIsLoggingIn(true));
   const response = await fetch(
     `${API_URL}/token`,
@@ -18,8 +24,7 @@ export const logUserIn = (formData) => async (dispatch) => {
     });
   dispatch(setIsLoggingIn(false));
   if (response.ok) {
-    console.log('Login successful!');
-    dispatch(getUserProfile());
+    console.log('Sucessfully logged in using credentials!');
     dispatch(setIsLoggedIn(true));
     dispatch(setLoginMessage('Connected'));
   } else {
@@ -29,18 +34,28 @@ export const logUserIn = (formData) => async (dispatch) => {
 };
 
 
+export const loginWithCookie = () => async (dispatch) => {
+  dispatch(setIsLoggingIn(true));
+  const response = await fetch(`${API_URL}/token`, getRequestInit);
+  dispatch(setIsLoggingIn(false));
+  if (response.ok) {
+    dispatch(setIsLoggedIn(true));
+    console.log('Sucessfully logged in using authentication cookie!');
+  } else {
+    dispatch(setIsLoggedIn(false));
+  }
+};
+
+
 export const getUserProfile = () => async (dispatch) => {
-  const response = await fetch(
-    `${API_URL}/user/me`,
-    {
-      method: 'GET',
-      credentials: 'include',  // Ensure cookies are sent
-    }
-  );
+  const response = await fetch(`${API_URL}/user/me`, getRequestInit);
   if (response.ok) {
     const userData = await response.json();
+    dispatch(setId(userData.id));
+    dispatch(setEmail(userData.email));
     dispatch(setPseudo(userData.pseudo));
     console.log(userData);
   } else {
+    dispatch(setPseudo(undefined));
   }
 };

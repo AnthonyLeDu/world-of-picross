@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useSelector, useDispatch} from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './index.scss';
-import { getUserProfile, logUserIn } from '../../store/api/user';
-import { getIsLoggedIn, getIsLoggingIn, getLoginMessage } from '../../store/selectors/user';
-import { setIsLoggingIn, setLoginMessage } from '../../store/actions/user';
+import { loginWithCredentials } from '../../../store/api/user';
+import { getIsLoggingIn, getLoginMessage } from '../../../store/selectors/user';
+import { setLoginMessage } from '../../../store/actions/user';
 
 
 const formContentInit = {
@@ -28,21 +28,21 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setIsLoggingIn(true));
     const formData = new FormData(e.target);
-    dispatch(logUserIn(formData));
+    dispatch(loginWithCredentials(formData));
   };
 
   const handleRegisterClicked = async (e) => {
-    dispatch(getUserProfile());
   };
+
+  useEffect(() => {
+    console.log(`isLoggingIn = ${isLoggingIn}`);
+
+  }, [isLoggingIn]);
 
   return (
     <div className='login'>
-      <form
-        onSubmit={handleSubmit}
-        disabled={isLoggingIn ? true : false}
-      >
+      <form onSubmit={handleSubmit}>
         <div className='login-inputs'>
           <label>
             Email
@@ -69,8 +69,18 @@ function Login() {
           </label>
         </div>
         <div className='login-buttons'>
-          <button type='submit'>Log me in</button>
-          <button onClick={handleRegisterClicked}>Register</button>
+          <button
+            type='submit'
+            disabled={isLoggingIn ? true : false}
+          >
+            Log me in
+          </button>
+          <button
+            onClick={handleRegisterClicked}
+            disabled={isLoggingIn ? true : false}
+          >
+            Register
+          </button>
         </div>
       </form>
       <p className='login-message'>{loginMessage}</p>

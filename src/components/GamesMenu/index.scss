@@ -28,6 +28,10 @@
         background-color: coral;
       }
     }
+
+    &--user-is-creator::before {
+      content: "***";
+    }
     
     &--invalid {
       background-color: $dark-grey;

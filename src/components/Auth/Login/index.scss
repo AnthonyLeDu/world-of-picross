@@ -1,10 +1,4 @@
 .login {
-  position: fixed;
-  right: 2rem;
-  border: 1px solid black;
-  padding: .5rem;
-  width: 25vw;
-
   &-inputs {
     display: flex;
     flex-direction: column;
