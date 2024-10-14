@@ -1,7 +1,7 @@
 import { getGame } from '../../models/game';
 
 
-export const getIsLoadingGames = (state) => state.app.isLoadingGames;
+export const getIsLoadingGamesSummaries = (state) => state.app.isLoadingGamesSummaries;
 
 export const getAvailableGames = (state) => {
   if (state.app.availableGamesIds === undefined) return undefined;

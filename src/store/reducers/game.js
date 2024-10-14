@@ -1,86 +1,32 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit';
-import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba, setCurrentRow, setCurrentColumn } from '../actions/game';
+import { initGameBoard, toggleCellON, toggleCellOFF, setCurrentRgba, setCurrentRow, setCurrentColumn, setIsLoading, setIsLoaded } from '../actions/game';
 import { getGame } from '../../models/game';
-import { areEqualRgbas } from '../../utils';
 
 
 const createTable = (gameId) => {
   const game = getGame(gameId);
   const table = [];
-  for (let row = 0; row < game.getRowsCount(); row += 1) {
+  for (let row = 0; row < game.rows_count; row += 1) {
     table.push([]);
-    for (let col = 0; col < game.getColumnsCount(); col += 1) {
+    for (let col = 0; col < game.columns_count; col += 1) {
       table[row].push({ state: null });
     }
   }
   return table;
 };
 
-
-const generateLineClues = (lineContent) => {
-  const clues = [];
-  let lastRgba = false;
-  let lastIndex = undefined;
-  // In the content data, only cells with info are stored so we look for gaps
-  // to determine there are empty cells or color changes.
-  for (let i = 0; i < lineContent.length; i++) {
-    const rgba = lineContent[i];
-    if (
-      lastIndex !== undefined  // Not the first cell
-      && i === lastIndex + 1  // Next to the previous cell
-      && areEqualRgbas(rgba, lastRgba)  // Same color than previous cell
-    ) {
-      clues[clues.length - 1].count += 1; // Increment cells count
-    }
-    else {
-      if (rgba === null) {
-        lastRgba = false;
-      }
-      else {
-        // Add new clue
-        clues.push({
-          rgba: rgba.slice(),  // Copy by value
-          count: 1,
-        });
-        lastRgba = rgba.slice();
-      }
-    }
-    lastIndex = i;
-  };
-
-  // No cell ON in this line
-  if (clues.length === 0) {
-    clues.push(null);
-  }
-  return clues;
-};
-
-
-
-
-/**
- * Generate the clues values from the given table content.
- * @param {Number[][]} tableContent 
- */
-const generateTableClues = (gameId) => {
+const getClues = (gameId) => {
   const game = getGame(gameId);
-  const fullContent = game.asFullTable();
-  const columnsContent = [];
-  for (let col = 0; col < game.getColumnsCount(); col++) {
-    columnsContent.push(fullContent.map(row => row[col]));
-  }
-  const clues = {
-    rows: fullContent.map(rowContent => generateLineClues(rowContent)),
-    columns: columnsContent.map(colContent => generateLineClues(colContent))
-  };
-  return clues;
+  return game.clues || undefined;
 };
 
 
 // Initial state
 const initialState = {
   id: undefined,
+  isLoading: undefined,
+  isLoaded: undefined,
   table: undefined,
   boardClues: undefined,
   completion: undefined,
@@ -94,11 +40,20 @@ const initialState = {
 export default createReducer(initialState, (builder) => {
   builder
 
+    .addCase(setIsLoading, (state, action) => {
+      state.isLoading = action.payload;
+      state.isLoaded = false;
+    })
+
+    .addCase(setIsLoaded, (state, action) => {
+      state.isLoaded = action.payload;
+    })
+
     .addCase(initGameBoard, (state, action) => {
       const gameId = action.payload;
       state.id = gameId;
       state.table = createTable(gameId);
-      state.boardClues = generateTableClues(gameId);
+      state.boardClues = getClues(gameId);
       state.completion = 0.0;
     })
 
@@ -123,7 +78,6 @@ export default createReducer(initialState, (builder) => {
           break;
       }
     })
-    
     .addCase(setCurrentRgba, (state, action) => {
       state.currentRgba = action.payload;
     })

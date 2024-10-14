@@ -1,12 +1,15 @@
 import { getGame } from '../../models/game';
 import { areEqualRgbas } from '../../utils';
 
+export const getIsLoading = (state) => state.game.isLoading;
+export const getIsLoaded = (state) => state.game.isLoaded;
+
 export const getBoardRowsCount = (state) => {
-  return getGame(state.game.id).getRowsCount();
+  return getGame(state.game.id).rows_count;
 };
 
 export const getBoardColumnsCount = (state) => {
-  return getGame(state.game.id).getColumnsCount();
+  return getGame(state.game.id).columns_count;
 };
 
 export const getGameName = (state) => {
@@ -50,17 +53,17 @@ export const getCompletion = (state) => {
   if (currentTable.length === 0) {
     throw new Error('Current board\'s table is empty.');
   }
-  if (currentTable.length !== game.table.length) {
+  if (currentTable.length !== game.content.length) {
     throw new Error('Compared boards have a different number of rows.');
   }
 
   const completedCellsCount = currentTable.map((row, i) => {
-    if (row.length !== game.table[i].length) {
+    if (row.length !== game.content[i].length) {
       throw new Error('Compared rows have a different number of columns.');
     }
     return row.reduce(
       (acc, cell, j) => {
-        const expectedCellState = game.table[i][j];
+        const expectedCellState = game.content[i][j];
         if (expectedCellState) {  // Not null/undefined/false
           return acc += (areEqualRgbas(cell.state, expectedCellState) ? 1 : 0);
         }

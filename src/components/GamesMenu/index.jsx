@@ -1,8 +1,8 @@
 import './index.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchAvailableGames } from '../../store/api/app';
-import { getAvailableGames } from '../../store/selectors/app';
+import { fetchGamesSummaries } from '../../store/api/app';
+import { getAvailableGames, getIsLoadingGamesSummaries } from '../../store/selectors/app';
 import GamesMenuCard from './GamesMenuCard';
 import { getIsLoggedIn } from '../../store/selectors/user';
 
@@ -10,15 +10,19 @@ function GamesMenu() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(getIsLoggedIn);
   const availableGames = useSelector(getAvailableGames);
+  const isLoadingGamesSummaries = useSelector(getIsLoadingGamesSummaries);
 
   useEffect(() => {
-    dispatch(fetchAvailableGames());
+    dispatch(fetchGamesSummaries());
   }, [dispatch, isLoggedIn]);
   
-  // console.log('availableGames:', availableGames);
-
   return (
     <div className="games-menu">
+    {isLoadingGamesSummaries && (
+      <div>
+        Loading games...
+      </div>
+    )}
       {availableGames && (
         availableGames.map((game) => (
           <GamesMenuCard

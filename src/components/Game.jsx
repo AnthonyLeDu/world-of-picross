@@ -1,17 +1,18 @@
 import './Game.scss';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import BoardClues from './BoardClues';
 import Board from './Board';
 import { useSelector } from 'react-redux';
-import { getBoardClues, getCompletion, getGameName, getCurrentRgba, getCurrentRow, getCurrentColumn } from '../store/selectors/game';
+import { getBoardClues, getCompletion, getGameName, getCurrentRgba, getCurrentRow, getCurrentColumn, getIsLoaded } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
 import { initGameBoard } from '../store/actions/game';
 import { rgbaStringFromArray } from '../utils';
+import { fetchGame } from '../store/api/game';
 
 
 function Game() {
-
+  const isLoaded = useSelector(getIsLoaded);
   const boardName = useSelector(getGameName);
   const boardClues = useSelector(getBoardClues);
   const completion = useSelector(getCompletion);
@@ -21,15 +22,24 @@ function Game() {
   const currentColumn = useSelector(getCurrentColumn);
   const dispatch = useDispatch();
 
+  const [gameId, setGameId] = useState(undefined);
+
   useEffect(() => {
-    if (currentGameId) {
-      dispatch(initGameBoard(currentGameId));
+    if (isLoaded) {
+      dispatch(initGameBoard(gameId));
     }
-  }, [dispatch, currentGameId]);
+  }, [dispatch, gameId, isLoaded]);
+
+  useEffect(() => {
+    if (currentGameId !== gameId) {
+      setGameId(currentGameId);
+      dispatch(fetchGame(currentGameId));
+    }
+  }, [dispatch, currentGameId, gameId]);
 
   return (
     <div className="game">
-      {currentGameId &&
+      {isLoaded && currentGameId &&
         <>
           <p>Left click : Toggle ON | Right-click : Toggle OFF</p>
           <p>Click on clues to change color.</p>
@@ -37,7 +47,7 @@ function Game() {
             <p>Current color :</p>
             <div
               className='game-color__square'
-              style={{backgroundColor: rgbaStringFromArray(currentRgba)}}
+              style={{ backgroundColor: rgbaStringFromArray(currentRgba) }}
             />
           </div>
           <p>Current row: {currentRow || '-'} | Current column: {currentColumn || '-'}</p>
@@ -49,14 +59,14 @@ function Game() {
               <div className='game-upper'>
                 <BoardClues
                   direction='columns'
-                  content={boardClues['columns']}
+                  content={boardClues[1]}
                 />
               </div>
 
               <div className="game-lower">
                 <BoardClues
                   direction='rows'
-                  content={boardClues['rows']}
+                  content={boardClues[0]}
                 />
                 <Board />
               </div>
