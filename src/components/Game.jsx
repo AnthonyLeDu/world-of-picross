@@ -4,12 +4,19 @@ import { useEffect, useState } from 'react';
 import BoardClues from './BoardClues';
 import Board from './Board';
 import { useSelector } from 'react-redux';
-import { getBoardClues, getCompletion, getGameName, getCurrentRgba, getCurrentRow, getCurrentColumn, getIsLoaded } from '../store/selectors/game';
+import {
+  getBoardClues,
+  getCompletion,
+  getGameName,
+  getCurrentRgba,
+  getCurrentRow,
+  getCurrentColumn,
+  getIsLoaded,
+} from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
 import { initGameBoard } from '../store/actions/game';
 import { rgbaStringFromArray } from '../utils';
 import { fetchGame } from '../store/api/game';
-
 
 function Game() {
   const isLoaded = useSelector(getIsLoaded);
@@ -39,44 +46,40 @@ function Game() {
 
   return (
     <div className="game">
-      {isLoaded && currentGameId &&
+      {isLoaded && currentGameId && (
         <>
           <p>Left click : Toggle ON | Right-click : Toggle OFF</p>
           <p>Click on clues to change color.</p>
           <div className="game-color">
             <p>Current color :</p>
             <div
-              className='game-color__square'
+              className="game-color__square"
               style={{ backgroundColor: rgbaStringFromArray(currentRgba) }}
             />
           </div>
-          <p>Current row: {currentRow || '-'} | Current column: {currentColumn || '-'}</p>
+          <p>
+            Current row: {currentRow || '-'} | Current column:{' '}
+            {currentColumn || '-'}
+          </p>
 
           <h1>{boardName}</h1>
 
           {boardClues && (
             <>
-              <div className='game-upper'>
-                <BoardClues
-                  direction='columns'
-                  content={boardClues[1]}
-                />
+              <div className="game-upper">
+                <BoardClues direction="columns" content={boardClues[1]} />
               </div>
 
               <div className="game-lower">
-                <BoardClues
-                  direction='rows'
-                  content={boardClues[0]}
-                />
+                <BoardClues direction="rows" content={boardClues[0]} />
                 <Board />
               </div>
 
               <p>Completion : {(completion * 100).toFixed(0)} %</p>
             </>
           )}
-
         </>
-      }
+      )}
     </div>
   );
 }

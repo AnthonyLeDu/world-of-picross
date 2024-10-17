@@ -23,8 +23,8 @@ export const loginWithCredentials = (formData) => async (dispatch) => {
       }),
     });
   dispatch(setIsLoggingIn(false));
+  // TODO: Replace messages with Toastify feedbacks
   if (response.ok) {
-    console.log('Sucessfully logged in using credentials!');
     dispatch(setIsLoggedIn(true));
     dispatch(setLoginMessage('Connected'));
   } else {
@@ -35,12 +35,12 @@ export const loginWithCredentials = (formData) => async (dispatch) => {
 
 
 export const loginWithCookie = () => async (dispatch) => {
+  // TODO: Replace messages with Toastify feedbacks
   dispatch(setIsLoggingIn(true));
   const response = await fetch(`${API_URL}/token`, getRequestInit);
   dispatch(setIsLoggingIn(false));
   if (response.ok) {
     dispatch(setIsLoggedIn(true));
-    console.log('Sucessfully logged in using authentication cookie!');
   } else {
     dispatch(setIsLoggedIn(false));
   }

@@ -3,7 +3,6 @@ export default class Game {
   name;
   difficulty;
   content;
-  table;
   creator_id;
 
   constructor({ id, name, difficulty, content, rows_count, columns_count, creator_id }) {

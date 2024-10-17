@@ -1,44 +1,70 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { getBoardTableCell, getCurrentRgba } from '../../store/selectors/game';
-import { toggleCellON, toggleCellOFF, setCurrentRow, setCurrentColumn } from '../../store/actions/game';
+import {
+  getBoardTableCellState,
+  getCurrentRgba,
+} from '../../store/selectors/game';
+import {
+  toggleCellON,
+  toggleCellOFF,
+  setCurrentRow,
+  setCurrentColumn,
+  updateCompletion,
+} from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
+import { saveGameState } from '../../store/api/game';
 
 function BoardCell({ rowIndex, columnIndex }) {
-  const dispatch = useDispatch();
-  const tableCell = useSelector((state) => getBoardTableCell(state, rowIndex, columnIndex));
+  const cellState = useSelector((state) =>
+    getBoardTableCellState(state, rowIndex, columnIndex)
+  );
   const [cellColor, setCellColor] = useState(null);
   const currentRgba = useSelector(getCurrentRgba);
 
-  const toggleON = () => {
-    dispatch(toggleCellON({
-      row: rowIndex,
-      column: columnIndex,
-      rgba: currentRgba,
-    }));
+  const dispatch = useDispatch();
+
+  const saveToDataBase = () => {
+    dispatch(saveGameState());
   };
+
+  const toggleON = () => {
+    dispatch(
+      toggleCellON({
+        row: rowIndex,
+        column: columnIndex,
+        rgba: currentRgba,
+      })
+    );
+    dispatch(updateCompletion());
+    saveToDataBase();
+  };
+
   const toggleOFF = (e) => {
     e.preventDefault(); // Prevent context menu to open
     dispatch(toggleCellOFF({ row: rowIndex, column: columnIndex }));
+    dispatch(updateCompletion());
+    saveToDataBase();
   };
 
   useEffect(() => {
-    if (tableCell.state) {
-      setCellColor(`rgba(${tableCell.state[0]}, ${tableCell.state[1]}, ${tableCell.state[2]}, ${tableCell.state[3]})`);
-    }
-    else {
+    if (cellState) {
+      // = is a RGBA array
+      setCellColor(
+        `rgba(${cellState[0]}, ${cellState[1]}, ${cellState[2]}, ${cellState[3]})`
+      );
+    } else {
       setCellColor('inherit');
     }
-  }, [tableCell.state]);
+  }, [cellState]);
 
   return (
     <div
       className={classNames(
         'cell board-cell',
-        // tableCell.state can be equal to null
-        { 'board-cell--off': tableCell?.state === false },
+        // cellState can be equal to null
+        { 'board-cell--off': cellState === false }
       )}
       style={{ backgroundColor: cellColor }}
       onClick={toggleON}

@@ -22,7 +22,6 @@ function BoardCluesLine({index, content, direction}) {
     <div
       className={classNames(
         'board-clues__line',
-        // tableCell.state can be equal to null
         { 'board-clues__line--current': isCurrent },
       )}
     >

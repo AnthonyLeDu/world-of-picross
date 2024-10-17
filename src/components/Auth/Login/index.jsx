@@ -35,11 +35,6 @@ function Login() {
   const handleRegisterClicked = async (e) => {
   };
 
-  useEffect(() => {
-    console.log(`isLoggingIn = ${isLoggingIn}`);
-
-  }, [isLoggingIn]);
-
   return (
     <div className='login'>
       <form onSubmit={handleSubmit}>
