@@ -10,7 +10,6 @@ import {
   toggleCellOFF,
   setCurrentRow,
   setCurrentColumn,
-  updateCompletion,
 } from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
@@ -37,14 +36,12 @@ function BoardCell({ rowIndex, columnIndex }) {
         rgba: currentRgba,
       })
     );
-    dispatch(updateCompletion());
     saveToDataBase();
   };
 
   const toggleOFF = (e) => {
     e.preventDefault(); // Prevent context menu to open
     dispatch(toggleCellOFF({ row: rowIndex, column: columnIndex }));
-    dispatch(updateCompletion());
     saveToDataBase();
   };
 

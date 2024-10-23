@@ -11,7 +11,6 @@ import {
   setIsLoaded,
   setIsSaved,
   setIsSaving,
-  updateCompletion,
   setGameCurrentContent,
 } from '../actions/game';
 import { getGame } from '../../models/game';
@@ -89,7 +88,11 @@ export default createReducer(initialState, (builder) => {
       const cellState = state.currentContent
         .at(action.payload.row)
         .at(action.payload.column);
-      if (cellState === null || cellState === false) {
+      if (
+        cellState === null ||
+        cellState === false ||
+        !areEqualRgbas(cellState, action.payload.rgba)  // replacing with a different color
+      ) {
         state.currentContent[action.payload.row][action.payload.column] =
           action.payload.rgba; // set the payload color and alpha
       } else {
@@ -123,46 +126,5 @@ export default createReducer(initialState, (builder) => {
 
     .addCase(setCurrentColumn, (state, action) => {
       state.currentColumn = action.payload;
-    })
-
-    .addCase(updateCompletion, (state, _) => {
-      // Calculate the completion rate (between 0 and 1) of the board's
-      // content compared to the goal content (the solution).
-      const game = getGame(state.id);
-      if (game === undefined || state.currentContent === undefined) {
-        state.completion = undefined;
-        return;
-      }
-
-      if (state.currentContent.length === 0) {
-        throw new Error("Current board's table is empty.");
-      }
-      if (state.currentContent.length !== game.content.length) {
-        throw new Error('Compared boards have a different number of rows.');
-      }
-
-      const completedCellsCount = state.currentContent
-        .map((row, i) => {
-          if (row.length !== game.content[i].length) {
-            throw new Error(
-              'Compared rows have a different number of columns.'
-            );
-          }
-          return row.reduce((acc, cellState, j) => {
-            const expectedCellState = game.content[i][j];
-            if (expectedCellState) {
-              // Not null/undefined/false
-              return (acc += areEqualRgbas(cellState, expectedCellState)
-                ? 1
-                : 0);
-            }
-            return (acc += 1);
-          }, 0);
-        })
-        .reduce((acc, value) => acc + value, 0);
-
-      state.completion =
-        completedCellsCount /
-        (state.currentContent.length * state.currentContent[0].length);
     });
 });

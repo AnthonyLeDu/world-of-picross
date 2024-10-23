@@ -11,5 +11,4 @@ export const setCurrentRow = createAction('game/setCurrentRow');
 export const setCurrentColumn = createAction('game/setCurrentColumn');
 export const setIsSaving = createAction('game/setIsSaving');
 export const setIsSaved = createAction('game/setIsSaved');
-export const updateCompletion = createAction('game/updateCompletion');
 

@@ -5,20 +5,28 @@ export default class Game {
   content;
   creator_id;
 
-  constructor({ id, name, difficulty, content, rows_count, columns_count, creator_id }) {
+  constructor({
+    id,
+    name,
+    difficulty,
+    content,
+    is_completed,
+    rows_count,
+    columns_count,
+    creator_id,
+  }) {
     this.id = id;
     this.name = name;
     this.difficulty = difficulty;
+    this.is_completed = is_completed;
     this.content = content;
     this.rows_count = rows_count;
     this.columns_count = columns_count;
     this.creator_id = creator_id;
   }
-
 }
 
 export const gamesMap = new Map();
-
 
 export const newGame = (data) => {
   const game = new Game(data);
@@ -26,11 +34,9 @@ export const newGame = (data) => {
   return game;
 };
 
-
 export const getGame = (id) => {
   return gamesMap.get(id);
 };
-
 
 export const deleteGame = (id) => {
   gamesMap.delete(id);

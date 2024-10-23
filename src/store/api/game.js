@@ -6,7 +6,6 @@ import {
   setIsLoading,
   setIsSaved,
   setIsSaving,
-  updateCompletion,
 } from '../actions/game';
 import { toast } from 'react-toastify';
 
@@ -30,7 +29,6 @@ export const fetchGame = (id) => async (dispatch) => {
   }
   const stateData = await gameStateResponse.json();
   dispatch(setGameCurrentContent(stateData.current_content));
-  dispatch(updateCompletion());
 };
 
 export const saveGameState = () => async (dispatch, getState) => {
