@@ -35,8 +35,11 @@ function BoardCluesCell({ rgba, count }) {
     return `data:image/svg+xml;base64,${btoa(svgString)}`;
   }, [backgroundColor, color]);
 
-  const pickColor = (e) => {
-    dispatch(setCurrentRgba(rgba));
+  const pickColor = (event) => {
+    if (event.button === 0) {  // Left Mouse Button
+      event.preventDefault();
+      dispatch(setCurrentRgba(rgba));
+    }
   };
 
   return (
@@ -47,7 +50,7 @@ function BoardCluesCell({ rgba, count }) {
         color,
         cursor: `url(${pipette}) 0 32, pointer`,
       }}
-      onClick={pickColor}
+      onMouseDown={pickColor}
     >
       {count}
     </div>

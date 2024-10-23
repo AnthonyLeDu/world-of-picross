@@ -36,3 +36,7 @@ export const getBoardTableCellState = (state, row, column) => {
 export const getGameCurrentContent = (state) => state.game.currentContent;
 
 export const getGameIsCompleted = (state) => state.game.isCompleted;
+
+export const getIsLeftMouseButtonDown = (state) => state.game.isLeftMouseButtonDown;
+export const getIsRightMouseButtonDown = (state) => state.game.isRightMouseButtonDown;
+export const getCurrentPaintingState = (state) => state.game.currentPaintingState;

@@ -3,17 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import {
   getBoardTableCellState,
+  getCurrentPaintingState,
   getCurrentRgba,
 } from '../../store/selectors/game';
 import {
-  toggleCellON,
-  toggleCellOFF,
   setCurrentRow,
   setCurrentColumn,
+  setCurrentPaintingState,
+  paintCell,
 } from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
 import { saveGameState } from '../../store/api/game';
+import { areEqualRgbas } from '../../utils';
 
 function BoardCell({ rowIndex, columnIndex }) {
   const cellState = useSelector((state) =>
@@ -21,28 +23,51 @@ function BoardCell({ rowIndex, columnIndex }) {
   );
   const [cellColor, setCellColor] = useState(null);
   const currentRgba = useSelector(getCurrentRgba);
+  const currentPaintingState = useSelector(getCurrentPaintingState);
 
   const dispatch = useDispatch();
 
-  const saveToDataBase = () => {
+  const paint = () => {
+    dispatch(paintCell({ row: rowIndex, column: columnIndex }));
     dispatch(saveGameState());
   };
 
-  const toggleON = () => {
-    dispatch(
-      toggleCellON({
-        row: rowIndex,
-        column: columnIndex,
-        rgba: currentRgba,
-      })
-    );
-    saveToDataBase();
+  const handleMouseDown = (event) => {
+    if (event.button !== 0 && event.button !== 2) return;
+
+    event.preventDefault();
+    // Determine painting state
+    // Left mouse button
+    if (event.button === 0) {
+      if (
+        cellState === null ||
+        cellState === false ||
+        // replacing with a different color
+        !areEqualRgbas(cellState, currentRgba)
+      ) {
+        // Toggle ON (or replace color)
+        dispatch(setCurrentPaintingState(currentRgba));
+      } else {
+        // Toggle OFF
+        dispatch(setCurrentPaintingState(null));
+      }
+    } else {
+      // Right mouse button
+      if (cellState === false) {
+        dispatch(setCurrentPaintingState(null));
+      } else {
+        dispatch(setCurrentPaintingState(false));
+      }
+    }
+    paint();
   };
 
-  const toggleOFF = (e) => {
-    e.preventDefault(); // Prevent context menu to open
-    dispatch(toggleCellOFF({ row: rowIndex, column: columnIndex }));
-    saveToDataBase();
+  const handleMouseEnter = (event) => {
+    dispatch(setCurrentRow(rowIndex));
+    dispatch(setCurrentColumn(columnIndex));
+
+    if (currentPaintingState === undefined) return; // Not painting
+    paint();
   };
 
   useEffect(() => {
@@ -64,12 +89,8 @@ function BoardCell({ rowIndex, columnIndex }) {
         { 'board-cell--off': cellState === false }
       )}
       style={{ backgroundColor: cellColor }}
-      onClick={toggleON}
-      onContextMenu={toggleOFF}
-      onMouseEnter={() => {
-        dispatch(setCurrentRow(rowIndex));
-        dispatch(setCurrentColumn(columnIndex));
-      }}
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
     />
   );
 }

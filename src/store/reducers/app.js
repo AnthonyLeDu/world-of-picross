@@ -1,6 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setAvailableGamesIds, setCurrentGameId, setIsLoadingGamesSummaries } from '../actions/app';
-
+import {
+  setAvailableGamesIds,
+  setCurrentGameId,
+  setIsLoadingGamesSummaries,
+} from '../actions/app';
 
 // Initial state
 const initialState = {

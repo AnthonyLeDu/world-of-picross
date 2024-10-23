@@ -14,7 +14,11 @@ import {
   getIsLoaded,
 } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
-import { initGameBoard } from '../store/actions/game';
+import {
+  initGameBoard,
+  setIsLeftMouseButtonDown,
+  setIsRightMouseButtonDown,
+} from '../store/actions/game';
 import { rgbaStringFromArray } from '../utils';
 import { fetchGame } from '../store/api/game';
 
@@ -27,7 +31,24 @@ function Game() {
   const currentRgba = useSelector(getCurrentRgba);
   const currentRow = useSelector(getCurrentRow);
   const currentColumn = useSelector(getCurrentColumn);
+
   const dispatch = useDispatch();
+
+  const handleMouseUp = (event) => {
+    event.preventDefault();
+    if (event.button === 0) {
+      // Left mouse button
+      dispatch(setIsLeftMouseButtonDown(false));
+    } else if (event.button === 2) {
+      // Right mouse button
+      dispatch(setIsRightMouseButtonDown(false));
+    }
+  };
+  
+  // const handleMouseLeave = () => {
+  //   dispatch(setIsLeftMouseButtonDown(false));
+  //   dispatch(setIsRightMouseButtonDown(false));
+  // };
 
   const [gameId, setGameId] = useState(undefined);
 
@@ -65,7 +86,11 @@ function Game() {
           <h1>{boardName}</h1>
 
           {boardClues && (
-            <>
+            <div
+              onMouseUp={handleMouseUp}
+              // onMouseLeave={handleMouseLeave}
+              onContextMenu={(event) => {event.preventDefault();}}
+            >
               <div className="game-upper">
                 <BoardClues direction="columns" content={boardClues[1]} />
               </div>
@@ -76,7 +101,7 @@ function Game() {
               </div>
 
               {isCompleted && <p>Completed!</p>}
-            </>
+            </div>
           )}
         </>
       )}

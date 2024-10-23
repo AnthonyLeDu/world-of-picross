@@ -2,8 +2,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   initGameBoard,
-  toggleCellON,
-  toggleCellOFF,
   setCurrentRgba,
   setCurrentRow,
   setCurrentColumn,
@@ -13,9 +11,12 @@ import {
   setIsSaving,
   setGameCurrentContent,
   setGameIsCompleted,
+  setIsLeftMouseButtonDown,
+  setIsRightMouseButtonDown,
+  setCurrentPaintingState,
+  paintCell,
 } from '../actions/game';
 import { getGame } from '../../models/game';
-import { areEqualRgbas } from '../../utils';
 
 const createContentTable = (gameId) => {
   const game = getGame(gameId);
@@ -47,6 +48,9 @@ const initialState = {
   currentColumn: undefined,
   isSaving: false,
   isSaved: undefined,
+  isLeftMouseButtonDown: false,
+  isRightMouseButtonDown: false,
+  currentPaintingState: undefined,
 };
 
 // Reducer
@@ -73,6 +77,26 @@ export default createReducer(initialState, (builder) => {
       state.isSaved = action.payload;
     })
 
+    .addCase(setIsLeftMouseButtonDown, (state, action) => {
+      state.isLeftMouseButtonDown = action.payload;
+      // Make sure left and right cannot be true at the same time
+      if (action.payload === true) {
+        state.isRightMouseButtonDown = false;
+      } else if (state.isRightMouseButtonDown === false) {
+        state.currentPaintingState = undefined;
+      }
+    })
+
+    .addCase(setIsRightMouseButtonDown, (state, action) => {
+      state.isRightMouseButtonDown = action.payload;
+      // Make sure left and right cannot be true at the same time
+      if (action.payload === true) {
+        state.isLeftMouseButtonDown = false;
+      } else if (state.isLeftMouseButtonDown === false) {
+        state.currentPaintingState = undefined;
+      }
+    })
+
     .addCase(initGameBoard, (state, action) => {
       const gameId = action.payload;
       state.id = gameId;
@@ -89,38 +113,15 @@ export default createReducer(initialState, (builder) => {
       state.isCompleted = action.payload;
     })
 
-    .addCase(toggleCellON, (state, action) => {
-      const cellState = state.currentContent
-        .at(action.payload.row)
-        .at(action.payload.column);
-      if (
-        cellState === null ||
-        cellState === false ||
-        !areEqualRgbas(cellState, action.payload.rgba)  // replacing with a different color
-      ) {
-        state.currentContent[action.payload.row][action.payload.column] =
-          action.payload.rgba; // set the payload color and alpha
-      } else {
-        state.currentContent[action.payload.row][action.payload.column] = null; // marked as empty
-      }
+    .addCase(setCurrentPaintingState, (state, action) => {
+      state.currentPaintingState = action.payload;
     })
 
-    .addCase(toggleCellOFF, (state, action) => {
-      const cellState = state.currentContent
-        .at(action.payload.row)
-        .at(action.payload.column);
-      switch (cellState) {
-        case false:
-          state.currentContent[action.payload.row][action.payload.column] =
-            null; // marked as empty
-          break;
-        default:
-          state.currentContent[action.payload.row][
-            action.payload.column
-          ] = false; // cross
-          break;
-      }
+    .addCase(paintCell, (state, action) => {
+      state.currentContent[action.payload.row][action.payload.column] =
+        state.currentPaintingState;
     })
+
     .addCase(setCurrentRgba, (state, action) => {
       state.currentRgba = action.payload;
     })
