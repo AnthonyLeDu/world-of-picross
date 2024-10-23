@@ -54,7 +54,6 @@ export const getUserProfile = () => async (dispatch) => {
     dispatch(setId(userData.id));
     dispatch(setEmail(userData.email));
     dispatch(setPseudo(userData.pseudo));
-    console.log(userData);
   } else {
     dispatch(setPseudo(undefined));
   }
