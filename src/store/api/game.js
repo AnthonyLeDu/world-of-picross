@@ -6,6 +6,7 @@ import {
   setIsLoading,
   setIsSaved,
   setIsSaving,
+  setGameIsCompleted,
 } from '../actions/game';
 import { toast } from 'react-toastify';
 
@@ -29,6 +30,7 @@ export const fetchGame = (id) => async (dispatch) => {
   }
   const stateData = await gameStateResponse.json();
   dispatch(setGameCurrentContent(stateData.current_content));
+  dispatch(setGameIsCompleted(stateData.is_completed));
 };
 
 export const saveGameState = () => async (dispatch, getState) => {
@@ -43,7 +45,6 @@ export const saveGameState = () => async (dispatch, getState) => {
 
   const gameId = state.game.id;
   const gameState = {
-    is_completed: state.game.completion === 1.0,
     current_content: state.game.currentContent
   };
 
@@ -62,8 +63,10 @@ export const saveGameState = () => async (dispatch, getState) => {
         error: 'Save failed!',
       }
     );
-
     if (response.ok) {
+      const gameStateResponse = await response.json();
+      dispatch(setGameCurrentContent(gameStateResponse.current_content));
+      dispatch(setGameIsCompleted(gameStateResponse.is_completed));
       dispatch(setIsSaving(false));
       dispatch(setIsSaved(true));
       return true;

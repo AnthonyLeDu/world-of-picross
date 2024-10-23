@@ -35,4 +35,4 @@ export const getBoardTableCellState = (state, row, column) => {
 
 export const getGameCurrentContent = (state) => state.game.currentContent;
 
-export const getCompletion = (state) => state.game.completion;
+export const getGameIsCompleted = (state) => state.game.isCompleted;

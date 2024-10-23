@@ -12,6 +12,7 @@ import {
   setIsSaved,
   setIsSaving,
   setGameCurrentContent,
+  setGameIsCompleted,
 } from '../actions/game';
 import { getGame } from '../../models/game';
 import { areEqualRgbas } from '../../utils';
@@ -40,7 +41,7 @@ const initialState = {
   isLoaded: undefined,
   currentContent: undefined,
   boardClues: undefined,
-  completion: undefined,
+  isCompleted: false,
   currentRgba: [0, 0, 0, 1.0],
   currentRow: undefined,
   currentColumn: undefined,
@@ -77,11 +78,15 @@ export default createReducer(initialState, (builder) => {
       state.id = gameId;
       state.currentContent = createContentTable(gameId);
       state.boardClues = getClues(gameId);
-      state.completion = 0.0;
+      state.isCompleted = false;
     })
 
     .addCase(setGameCurrentContent, (state, action) => {
       state.currentContent = action.payload;
+    })
+
+    .addCase(setGameIsCompleted, (state, action) => {
+      state.isCompleted = action.payload;
     })
 
     .addCase(toggleCellON, (state, action) => {

@@ -6,7 +6,7 @@ import Board from './Board';
 import { useSelector } from 'react-redux';
 import {
   getBoardClues,
-  getCompletion,
+  getGameIsCompleted,
   getGameName,
   getCurrentRgba,
   getCurrentRow,
@@ -22,7 +22,7 @@ function Game() {
   const isLoaded = useSelector(getIsLoaded);
   const boardName = useSelector(getGameName);
   const boardClues = useSelector(getBoardClues);
-  const completion = useSelector(getCompletion);
+  const isCompleted = useSelector(getGameIsCompleted);
   const currentGameId = useSelector(getCurrentGameId);
   const currentRgba = useSelector(getCurrentRgba);
   const currentRow = useSelector(getCurrentRow);
@@ -75,7 +75,7 @@ function Game() {
                 <Board />
               </div>
 
-              <p>Completion : {(completion * 100).toFixed(0)} %</p>
+              {isCompleted && <p>Completed!</p>}
             </>
           )}
         </>
