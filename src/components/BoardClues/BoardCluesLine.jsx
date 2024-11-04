@@ -48,7 +48,7 @@ BoardCluesLine.propTypes = {
     PropTypes.shape(
       BoardCluesCell.propTypes
     )
-  ).isRequired,
+  ),
   direction: PropTypes.string.isRequired,
 };
 

@@ -78,10 +78,10 @@ function Game() {
               style={{ backgroundColor: rgbaStringFromArray(currentRgba) }}
             />
           </div>
-          <p>
+          {/* <p>
             Current row: {currentRow || '-'} | Current column:{' '}
             {currentColumn || '-'}
-          </p>
+          </p> */}
 
           <h1>{boardName}</h1>
 

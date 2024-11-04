@@ -11,7 +11,7 @@ const getRequestInit = {
 export const loginWithCredentials = (formData) => async (dispatch) => {
   dispatch(setIsLoggingIn(true));
   const response = await fetch(
-    `${API_URL}/token`,
+    `${API_URL}/login`,
     {
       method: 'POST',
       headers: {
@@ -24,6 +24,7 @@ export const loginWithCredentials = (formData) => async (dispatch) => {
     });
   dispatch(setIsLoggingIn(false));
   // TODO: Replace messages with Toastify feedbacks
+  dispatch(setLoginMessage(''));
   if (response.ok) {
     dispatch(setIsLoggedIn(true));
     dispatch(setLoginMessage('Connected'));
@@ -37,12 +38,22 @@ export const loginWithCredentials = (formData) => async (dispatch) => {
 export const loginWithCookie = () => async (dispatch) => {
   // TODO: Replace messages with Toastify feedbacks
   dispatch(setIsLoggingIn(true));
-  const response = await fetch(`${API_URL}/token`, getRequestInit);
+  const response = await fetch(`${API_URL}/login`, getRequestInit);
   dispatch(setIsLoggingIn(false));
   if (response.ok) {
     dispatch(setIsLoggedIn(true));
   } else {
     dispatch(setIsLoggedIn(false));
+  }
+};
+
+export const logout = () => async (dispatch) => {
+  dispatch(setLoginMessage(''));
+  const response = await fetch(`${API_URL}/logout`, getRequestInit);
+  if (response.ok) {
+    dispatch(setIsLoggedIn(false));
+  } else {
+    dispatch(setLoginMessage('Failed to log out. Please retry.'));
   }
 };
 

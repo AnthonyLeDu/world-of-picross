@@ -14,7 +14,6 @@ const formContentInit = {
 function Login() {
   const dispatch = useDispatch();
   const isLoggingIn = useSelector(getIsLoggingIn);
-  const loginMessage = useSelector(getLoginMessage);
   const [formContent, setFormContent] = useState({ ...formContentInit });
 
   const handleInputChange = (e) => {
@@ -78,7 +77,6 @@ function Login() {
           </button>
         </div>
       </form>
-      <p className='login-message'>{loginMessage}</p>
     </div>
   );
 }
