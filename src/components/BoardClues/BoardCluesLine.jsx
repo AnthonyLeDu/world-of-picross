@@ -5,6 +5,7 @@ import './index.scss';
 import { useSelector } from 'react-redux';
 import { getCurrentColumn, getCurrentRow } from '../../store/selectors/game';
 import { useEffect, useState } from 'react';
+import EmptyBoardCluesCell from './EmptyBoardCluesCell';
 
 function BoardCluesLine({index, content, direction}) {
   const currentRow = useSelector(getCurrentRow);
@@ -25,7 +26,7 @@ function BoardCluesLine({index, content, direction}) {
         { 'board-clues__line--current': isCurrent },
       )}
     >
-    { 
+    { content === null ? <EmptyBoardCluesCell /> : (
       [...Array(content.length)].map((_, i) => (
           <BoardCluesCell
             // eslint-disable-next-line react/no-array-index-key
@@ -35,6 +36,7 @@ function BoardCluesLine({index, content, direction}) {
             count={content[i].count}
           />
         ))
+    )
     }
     </div>
   );
