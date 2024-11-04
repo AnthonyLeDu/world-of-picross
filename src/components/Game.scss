@@ -1,4 +1,4 @@
-.game{
+.game {
   width: fit-content;
   margin: 3rem auto;
 
@@ -13,9 +13,24 @@
       height: 1rem;
     }
   }
-  &-lower {
-    display: flex;
-    width: fit-content;
-    margin-left: auto;
+
+  &-area {
+    padding: 2rem;
+    border: 1px solid darkgray;
+
+    &-lower {
+      display: flex;
+      width: fit-content;
+      margin-left: auto;
+    }
+
+    &-completion {
+      font-size: 2rem;
+      color: green;
+      font-variant: small-caps;
+      margin-top: .5rem;
+    }
   }
+
+
 }

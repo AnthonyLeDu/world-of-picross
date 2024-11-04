@@ -14,7 +14,6 @@ import {
 } from '../../store/actions/game';
 import './index.scss';
 import { useEffect, useState } from 'react';
-import { saveGameState } from '../../store/api/game';
 import { areEqualRgbas } from '../../utils';
 
 function BoardCell({ rowIndex, columnIndex }) {
@@ -29,7 +28,6 @@ function BoardCell({ rowIndex, columnIndex }) {
 
   const paint = () => {
     dispatch(paintCell({ row: rowIndex, column: columnIndex }));
-    dispatch(saveGameState());
   };
 
   const handleMouseDown = (event) => {

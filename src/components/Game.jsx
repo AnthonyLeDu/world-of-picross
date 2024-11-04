@@ -9,8 +9,8 @@ import {
   getGameIsCompleted,
   getGameName,
   getCurrentRgba,
-  getCurrentRow,
-  getCurrentColumn,
+  // getCurrentRow,
+  // getCurrentColumn,
   getIsLoaded,
 } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
@@ -20,7 +20,7 @@ import {
   setIsRightMouseButtonDown,
 } from '../store/actions/game';
 import { rgbaStringFromArray } from '../utils';
-import { fetchGame } from '../store/api/game';
+import { fetchGame, saveGameState } from '../store/api/game';
 
 function Game() {
   const isLoaded = useSelector(getIsLoaded);
@@ -29,8 +29,8 @@ function Game() {
   const isCompleted = useSelector(getGameIsCompleted);
   const currentGameId = useSelector(getCurrentGameId);
   const currentRgba = useSelector(getCurrentRgba);
-  const currentRow = useSelector(getCurrentRow);
-  const currentColumn = useSelector(getCurrentColumn);
+  // const currentRow = useSelector(getCurrentRow);
+  // const currentColumn = useSelector(getCurrentColumn);
 
   const dispatch = useDispatch();
 
@@ -43,12 +43,14 @@ function Game() {
       // Right mouse button
       dispatch(setIsRightMouseButtonDown(false));
     }
+    dispatch(saveGameState());
   };
   
-  // const handleMouseLeave = () => {
-  //   dispatch(setIsLeftMouseButtonDown(false));
-  //   dispatch(setIsRightMouseButtonDown(false));
-  // };
+  const handleMouseLeave = () => {
+    dispatch(setIsLeftMouseButtonDown(false));
+    dispatch(setIsRightMouseButtonDown(false));
+    dispatch(saveGameState());
+  };
 
   const [gameId, setGameId] = useState(undefined);
 
@@ -87,20 +89,23 @@ function Game() {
 
           {boardClues && (
             <div
+              className="game-area"
               onMouseUp={handleMouseUp}
-              // onMouseLeave={handleMouseLeave}
+              onMouseLeave={handleMouseLeave}
               onContextMenu={(event) => {event.preventDefault();}}
             >
-              <div className="game-upper">
+              <div className="game-area-upper">
                 <BoardClues direction="columns" content={boardClues[1]} />
               </div>
 
-              <div className="game-lower">
+              <div className="game-area-lower">
                 <BoardClues direction="rows" content={boardClues[0]} />
                 <Board />
               </div>
 
-              {isCompleted && <p>Completed!</p>}
+              <div className="game-area-completion">
+                {isCompleted && <p>Game completed!</p>}
+              </div>
             </div>
           )}
         </>

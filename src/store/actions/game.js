@@ -4,6 +4,7 @@ export const initGameBoard = createAction('game/initGameBoard');
 export const setIsLoading = createAction('game/setIsLoading');
 export const setIsLoaded = createAction('game/setIsLoaded');
 export const setGameCurrentContent = createAction('game/setGameCurrentContent');
+export const setGameLastSavedContent = createAction('game/setGameLastSavedContent');
 export const setGameIsCompleted = createAction('game/setGameIsCompleted');
 export const setCurrentRgba = createAction('game/setCurrentRgba');
 export const setCurrentRow = createAction('game/setCurrentRow');

@@ -19,8 +19,7 @@ function Auth() {
 
   return (
     <div className='auth'>
-      {isLoggedIn === false && <Login />}
-      {isLoggedIn === true && <Profile />}
+      {isLoggedIn ? <Profile /> : <Login />}
       <p className='login-message'>{loginMessage}</p>
       </div>
   );

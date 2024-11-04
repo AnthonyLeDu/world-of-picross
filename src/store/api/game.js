@@ -7,6 +7,7 @@ import {
   setIsSaved,
   setIsSaving,
   setGameIsCompleted,
+  setGameLastSavedContent,
 } from '../actions/game';
 import { toast } from 'react-toastify';
 
@@ -34,7 +35,6 @@ export const fetchGame = (id) => async (dispatch) => {
 };
 
 export const saveGameState = () => async (dispatch, getState) => {
-  // TODO: Pending, success and error messages (toastify). Need to move this in the reducer ? (https://stackoverflow.com/questions/72017203/react-toastify-with-redux-from-axios-api)
   const state = getState();
   
   // If user is not authenticated, don't attempt to save
@@ -42,6 +42,12 @@ export const saveGameState = () => async (dispatch, getState) => {
     dispatch(setIsSaved(false));
     return;
   };
+  
+  // If content has not changed, don't save
+  if (state.game.currentContent === state.game.lastSavedContent) {
+    dispatch(setIsSaved(true));
+    return;
+  }
 
   const gameId = state.game.id;
   const gameState = {
@@ -65,6 +71,7 @@ export const saveGameState = () => async (dispatch, getState) => {
     );
     if (response.ok) {
       const gameStateResponse = await response.json();
+      dispatch(setGameLastSavedContent(gameStateResponse.current_content));
       dispatch(setGameCurrentContent(gameStateResponse.current_content));
       dispatch(setGameIsCompleted(gameStateResponse.is_completed));
       dispatch(setIsSaving(false));

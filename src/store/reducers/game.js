@@ -15,6 +15,7 @@ import {
   setIsRightMouseButtonDown,
   setCurrentPaintingState,
   paintCell,
+  setGameLastSavedContent,
 } from '../actions/game';
 import { getGame } from '../../models/game';
 
@@ -41,6 +42,7 @@ const initialState = {
   isLoading: undefined,
   isLoaded: undefined,
   currentContent: undefined,
+  lastSavedContent: undefined,
   boardClues: undefined,
   isCompleted: false,
   currentRgba: [0, 0, 0, 1.0],
@@ -101,12 +103,17 @@ export default createReducer(initialState, (builder) => {
       const gameId = action.payload;
       state.id = gameId;
       state.currentContent = createContentTable(gameId);
+      state.lastSavedContent = undefined;
       state.boardClues = getClues(gameId);
       state.isCompleted = false;
     })
 
     .addCase(setGameCurrentContent, (state, action) => {
       state.currentContent = action.payload;
+    })
+
+    .addCase(setGameLastSavedContent, (state, action) => {
+      state.lastSavedContent = action.payload;
     })
 
     .addCase(setGameIsCompleted, (state, action) => {
