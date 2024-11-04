@@ -15,7 +15,6 @@ import {
 } from '../store/selectors/game';
 import { getCurrentGameId } from '../store/selectors/app';
 import {
-  initGameBoard,
   setIsLeftMouseButtonDown,
   setIsRightMouseButtonDown,
 } from '../store/actions/game';
@@ -53,12 +52,6 @@ function Game() {
   };
 
   const [gameId, setGameId] = useState(undefined);
-
-  useEffect(() => {
-    if (isLoaded) {
-      dispatch(initGameBoard(gameId));
-    }
-  }, [dispatch, gameId, isLoaded]);
 
   useEffect(() => {
     if (currentGameId !== gameId) {

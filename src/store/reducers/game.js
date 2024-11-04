@@ -19,8 +19,7 @@ import {
 } from '../actions/game';
 import { getGame } from '../../models/game';
 
-const createContentTable = (gameId) => {
-  const game = getGame(gameId);
+const createContentTable = (game) => {
   const table = [];
   for (let row = 0; row < game.rows_count; row += 1) {
     table.push([]);
@@ -31,10 +30,6 @@ const createContentTable = (gameId) => {
   return table;
 };
 
-const getClues = (gameId) => {
-  const game = getGame(gameId);
-  return game.clues || undefined;
-};
 
 // Initial state
 const initialState = {
@@ -100,12 +95,11 @@ export default createReducer(initialState, (builder) => {
     })
 
     .addCase(initGameBoard, (state, action) => {
-      const gameId = action.payload;
-      state.id = gameId;
-      state.currentContent = createContentTable(gameId);
-      state.lastSavedContent = undefined;
-      state.boardClues = getClues(gameId);
-      state.isCompleted = false;
+      const game = getGame(action.payload);
+      state.id = game.id;
+      state.currentContent = createContentTable(game);
+      state.lastSavedContent = createContentTable(game);
+      state.boardClues = game.clues || undefined;
     })
 
     .addCase(setGameCurrentContent, (state, action) => {

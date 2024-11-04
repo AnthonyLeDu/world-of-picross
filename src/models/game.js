@@ -47,6 +47,7 @@ export const updateGame = (id, data) => {
   game.name = data.name;
   game.difficulty = data.difficulty;
   game.content = data.content;
+  game.is_completed = data.is_completed;
   game.clues = data.clues;
   game.rows_count = data.rows_count;
   game.columns_count = data.columns_count;
