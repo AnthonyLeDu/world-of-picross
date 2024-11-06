@@ -1,5 +1,7 @@
 import { getGame } from '../../models/game';
 
+export const getCurrentAuthForm = (state) => state.app.currentAuthForm;
+
 export const getIsLoadingGamesSummaries = (state) =>
   state.app.isLoadingGamesSummaries;
 

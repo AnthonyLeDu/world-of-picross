@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCreatedGames, setId, setIsLoggedIn, setIsLoggingIn, setLoginMessage, setUserName, setPlayedGames, setPseudo } from '../actions/user';
+import { setCreatedGames, setId, setIsLoggedIn, setIsLoggingIn, setAuthMessage, setUserName, setPlayedGames, setPseudo } from '../actions/user';
 
 
 // Initial state
 const initialState = {
   isLoggingIn: false,
   isLoggedIn: undefined,
-  loginMessage: '',
+  authMessage: '',
   id: undefined,
   username: undefined,
   pseudo: undefined,
@@ -26,8 +26,8 @@ export default createReducer(initialState, (builder) => {
       state.isLoggedIn = action.payload;
     })
 
-    .addCase(setLoginMessage, (state, action) => {
-      state.loginMessage = action.payload;
+    .addCase(setAuthMessage, (state, action) => {
+      state.authMessage = action.payload;
     })
 
     .addCase(setId, (state, action) => {

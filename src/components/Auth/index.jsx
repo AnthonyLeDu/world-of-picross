@@ -1,26 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './index.scss';
-import { useEffect } from 'react';
-import { loginWithCookie } from '../../store/api/user';
-import { getIsLoggedIn, getLoginMessage } from '../../store/selectors/user';
-import Login from './Login';
+import { getIsLoggedIn, getAuthMessage } from '../../store/selectors/user';
 import Profile from './Profile';
+import AuthForms from './AuthForms';
 
 
 function Auth() {
-  const dispatch = useDispatch();
   const isLoggedIn = useSelector(getIsLoggedIn);
-  const loginMessage = useSelector(getLoginMessage);
-
-  useEffect(() => {
-    dispatch(loginWithCookie());
-  }, [dispatch]);
+  const authMessage = useSelector(getAuthMessage);
 
 
   return (
     <div className='auth'>
-      {isLoggedIn ? <Profile /> : <Login />}
-      <p className='login-message'>{loginMessage}</p>
+      {isLoggedIn ? <Profile /> : <AuthForms />}
+      <p className='auth-message'>{authMessage}</p>
       </div>
   );
 }

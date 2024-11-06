@@ -1,12 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   setAvailableGamesIds,
+  setCurrentAuthForm,
   setCurrentGameId,
   setIsLoadingGamesSummaries,
 } from '../actions/app';
 
 // Initial state
 const initialState = {
+  currentAuthForm: 'login',
   isLoadingGamesSummaries: true,
   availableGamesIds: undefined,
   currentGameId: undefined,
@@ -15,6 +17,10 @@ const initialState = {
 // Reducer
 export default createReducer(initialState, (builder) => {
   builder
+
+    .addCase(setCurrentAuthForm, (state, action) => {
+      state.currentAuthForm = action.payload;
+    })
 
     .addCase(setAvailableGamesIds, (state, action) => {
       state.availableGamesIds = action.payload;
