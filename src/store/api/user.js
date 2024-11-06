@@ -4,7 +4,7 @@ import {
   setIsLoggedIn,
   setIsLoggingIn,
   setLoginMessage,
-  setEmail,
+  setUserName,
   setPseudo,
 } from '../actions/user';
 import { toast } from 'react-toastify';
@@ -23,7 +23,7 @@ export const loginWithCredentials = (formData) => async (dispatch) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        username: formData.get('email'), // OAuth2 expects a 'username' key
+        username: formData.get('username'),
         password: formData.get('password'),
       }),
     }),
@@ -74,7 +74,7 @@ export const getUserProfile = () => async (dispatch) => {
   if (response.ok) {
     const userData = await response.json();
     dispatch(setId(userData.id));
-    dispatch(setEmail(userData.email));
+    dispatch(setUserName(userData.username));
     dispatch(setPseudo(userData.pseudo));
   } else {
     dispatch(setPseudo(undefined));

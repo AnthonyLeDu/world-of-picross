@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './index.scss';
 import { loginWithCredentials } from '../../../store/api/user';
-import { getIsLoggingIn, getLoginMessage } from '../../../store/selectors/user';
+import { getIsLoggingIn } from '../../../store/selectors/user';
 import { setLoginMessage } from '../../../store/actions/user';
 
 
 const formContentInit = {
-  email: '',
+  username: '',
   password: '',
 };
 
@@ -42,8 +42,8 @@ function Login() {
             Email
             <input
               type='email'
-              name='email'
-              value={formContent.email}
+              name='username'  // OAuth2 expects a 'username' key
+              value={formContent.username}
               placeholder='john.doe@email.com'
               required
               onChange={handleInputChange}
