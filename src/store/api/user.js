@@ -17,13 +17,16 @@ const getRequestInit = {
 
 export const registerWithCredentials = (formData) => async (dispatch) => {
   dispatch(setIsLoggingIn(true));
+  const userData = {
+    pseudo: formData.get('pseudo'),
+    username: formData.get('username'),
+    password: formData.get('password'),
+  };
   const response = await toast.promise(
     fetch(`${API_URL}/user`, {
       method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-        },
-      body: JSON.stringify(formData),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
     }),
     {
       pending: 'Registering...',
@@ -32,7 +35,7 @@ export const registerWithCredentials = (formData) => async (dispatch) => {
     }
   );
   console.log(response);
-  
+
   dispatch(setIsLoggingIn(false));
   dispatch(setAuthMessage(''));
   if (response.ok) {
@@ -41,7 +44,7 @@ export const registerWithCredentials = (formData) => async (dispatch) => {
   }
   const json = await response.json();
   console.log(json);
-  
+
   const reason = json?.detail ?? 'unknown';
   dispatch(setAuthMessage(`Failed to register: ${reason}.`));
 };

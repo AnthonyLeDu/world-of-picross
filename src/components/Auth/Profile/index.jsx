@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 import { getUserProfile, logout } from '../../../store/api/user';
-import { getUserName, getUserPseudo } from '../../../store/selectors/user';
+import { getAuthMessage, getUserName, getUserPseudo } from '../../../store/selectors/user';
 import { useEffect } from 'react';
 
 
@@ -9,6 +9,7 @@ function Profile() {
   const dispatch = useDispatch();
   const userPseudo = useSelector(getUserPseudo);
   const userName = useSelector(getUserName);
+  const authMessage = useSelector(getAuthMessage);
 
   useEffect(() => {
     dispatch(getUserProfile());
@@ -23,7 +24,8 @@ function Profile() {
       <h2 className='profile__pseudo'>{userPseudo}</h2>
       <p className='profile__mail'>{userName}</p>
       <button className='profile__logout' onClick={handleLogout}>X</button>
-    </div>
+      <p className='auth-message'>{authMessage}</p>
+      </div>
   );
 }
 

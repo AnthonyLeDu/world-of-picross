@@ -7,10 +7,12 @@ import Login from './Login';
 import Register from './Register';
 import classNames from 'classnames';
 import { setCurrentAuthForm } from '../../../store/actions/app';
+import { getAuthMessage } from '../../../store/selectors/user';
 
 function AuthForms() {
   const dispatch = useDispatch();
   const currentAuthForm = useSelector(getCurrentAuthForm);
+  const authMessage = useSelector(getAuthMessage);
 
   useEffect(() => {
     dispatch(loginWithCookie());
@@ -42,6 +44,7 @@ function AuthForms() {
       </div>
       <div className="authforms-form">
         {currentAuthForm === 'login' ? <Login /> : <Register />}
+        <p className="auth-message">{authMessage}</p>
       </div>
     </div>
   );
